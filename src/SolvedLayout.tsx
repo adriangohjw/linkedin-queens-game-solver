@@ -47,6 +47,9 @@ export default function SolvedLayout({
   }
 
   function markYes({ row, col }: { row: number; col: number }) {
+    if (puzzleContent[row][col] === YES) {
+      return;
+    }
     markGrid({ row, col, content: YES });
     markSurroundingNo({ row, col });
     markRowNo({ row, excludeCol: col });
@@ -54,6 +57,9 @@ export default function SolvedLayout({
   }
 
   function markNo({ row, col }: { row: number; col: number }) {
+    if (puzzleContent[row][col] === NO) {
+      return;
+    }
     markGrid({ row, col, content: NO });
   }
 
