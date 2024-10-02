@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { YES, NO, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
@@ -26,175 +26,200 @@ export default function SolvedLayout({
     }
   }
 
-  function markGrid({
-    row,
-    col,
-    content,
-  }: {
-    row: number;
-    col: number;
-    content: string;
-  }) {
-    setPuzzleContent((prev) => {
-      const newGrid = [...prev];
-      newGrid[row][col] = content;
-      return newGrid;
-    });
-  }
+  const markGrid = useCallback(
+    ({ row, col, content }: { row: number; col: number; content: string }) => {
+      setPuzzleContent((prev) => {
+        const newGrid = [...prev];
+        newGrid[row][col] = content;
+        return newGrid;
+      });
+    },
+    []
+  );
 
-  function markYes({ row, col }: { row: number; col: number }) {
-    if (puzzleContent[row][col] === YES) {
-      return;
-    }
-    markGrid({ row, col, content: YES });
-    markSurroundingNo({ row, col });
-    markRowNo({ row, excludeCol: col });
-    markColNo({ col, excludeRow: row });
-  }
+  const markNo = useCallback(
+    ({ row, col }: { row: number; col: number }) => {
+      if (puzzleContent[row][col] === NO) {
+        return;
+      }
+      markGrid({ row, col, content: NO });
+    },
+    [puzzleContent, markGrid]
+  );
 
-  function markNo({ row, col }: { row: number; col: number }) {
-    if (puzzleContent[row][col] === NO) {
-      return;
-    }
-    markGrid({ row, col, content: NO });
-  }
-
-  function markSurroundingNo({ row, col }: { row: number; col: number }) {
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        if (i === 0 && j === 0) continue;
-        const newRow = row + i;
-        const newCol = col + j;
-        if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
-          markNo({ row: newRow, col: newCol });
+  const markSurroundingNo = useCallback(
+    ({ row, col }: { row: number; col: number }) => {
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue;
+          const newRow = row + i;
+          const newCol = col + j;
+          if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
+            markNo({ row: newRow, col: newCol });
+          }
         }
       }
-    }
-  }
+    },
+    [markNo, size]
+  );
 
-  function markRowNo({ row, excludeCol }: { row: number; excludeCol: number }) {
-    for (let i = 0; i < size; i++) {
-      if (i === excludeCol) continue;
-      markNo({ row, col: i });
-    }
-  }
+  const markRowNo = useCallback(
+    ({ row, excludeCol }: { row: number; excludeCol: number }) => {
+      for (let i = 0; i < size; i++) {
+        if (i === excludeCol) continue;
+        markNo({ row, col: i });
+      }
+    },
+    [markNo, size]
+  );
 
-  function markColNo({ col, excludeRow }: { col: number; excludeRow: number }) {
-    for (let i = 0; i < size; i++) {
-      if (i === excludeRow) continue;
-      markNo({ row: i, col });
-    }
-  }
+  const markColNo = useCallback(
+    ({ col, excludeRow }: { col: number; excludeRow: number }) => {
+      for (let i = 0; i < size; i++) {
+        if (i === excludeRow) continue;
+        markNo({ row: i, col });
+      }
+    },
+    [markNo, size]
+  );
 
-  function fillSingleEmptyCellInRow({ row }: { row: number }) {
-    const currentRowContent = puzzleContent[row];
+  const markYes = useCallback(
+    ({ row, col }: { row: number; col: number }) => {
+      if (puzzleContent[row][col] === YES) {
+        return;
+      }
+      markGrid({ row, col, content: YES });
+      markSurroundingNo({ row, col });
+      markRowNo({ row, excludeCol: col });
+      markColNo({ col, excludeRow: row });
+    },
+    [puzzleContent, markGrid, markSurroundingNo, markRowNo, markColNo]
+  );
 
-    const emptyCellIndices = currentRowContent
-      .map((cell, index) => (cell === null ? index : -1))
-      .filter((index) => index !== -1);
+  const fillSingleEmptyCellInRow = useCallback(
+    ({ row }: { row: number }) => {
+      const currentRowContent = puzzleContent[row];
 
-    if (emptyCellIndices.length === 1) {
-      markYes({ row, col: emptyCellIndices[0] });
-    }
-  }
+      const emptyCellIndices = currentRowContent
+        .map((cell, index) => (cell === null ? index : -1))
+        .filter((index) => index !== -1);
 
-  function fillSingleEmptyCellInCol({ col }: { col: number }) {
-    const currentColContent = puzzleContent.map((row) => row[col]);
+      if (emptyCellIndices.length === 1) {
+        markYes({ row, col: emptyCellIndices[0] });
+      }
+    },
+    [puzzleContent, markYes]
+  );
 
-    const emptyCellIndices = currentColContent
-      .map((cell, index) => (cell === null ? index : -1))
-      .filter((index) => index !== -1);
+  const fillSingleEmptyCellInCol = useCallback(
+    ({ col }: { col: number }) => {
+      const currentColContent = puzzleContent.map((row) => row[col]);
 
-    if (emptyCellIndices.length === 1) {
-      markYes({ row: emptyCellIndices[0], col });
-    }
-  }
+      const emptyCellIndices = currentColContent
+        .map((cell, index) => (cell === null ? index : -1))
+        .filter((index) => index !== -1);
 
-  function detectSingleColorRow({ row }: { row: number }) {
-    const emptyCellIndices = puzzleContent[row]
-      .map((cell, index) => (cell === null ? index : -1))
-      .filter((index) => index !== -1);
+      if (emptyCellIndices.length === 1) {
+        markYes({ row: emptyCellIndices[0], col });
+      }
+    },
+    [puzzleContent, markYes]
+  );
 
-    if (emptyCellIndices.length === 0) return;
+  const detectSingleColorRow = useCallback(
+    ({ row }: { row: number }) => {
+      const emptyCellIndices = puzzleContent[row]
+        .map((cell, index) => (cell === null ? index : -1))
+        .filter((index) => index !== -1);
 
-    const uniqueColors = new Set(
-      emptyCellIndices
-        .map((index) => puzzleColors[row][index])
-        .filter((cell) => cell !== null)
-    );
-    if (uniqueColors.size === 1) {
-      const color = uniqueColors.values().next().value;
-      if (color) {
-        // markNoForColorExceptRow
-        for (let i = 0; i < size; i++) {
-          if (i !== row) {
-            for (let j = 0; j < size; j++) {
-              if (puzzleColors[i][j] === color) {
-                markNo({ row: i, col: j });
+      if (emptyCellIndices.length === 0) return;
+
+      const uniqueColors = new Set(
+        emptyCellIndices
+          .map((index) => puzzleColors[row][index])
+          .filter((cell) => cell !== null)
+      );
+      if (uniqueColors.size === 1) {
+        const color = uniqueColors.values().next().value;
+        if (color) {
+          // markNoForColorExceptRow
+          for (let i = 0; i < size; i++) {
+            if (i !== row) {
+              for (let j = 0; j < size; j++) {
+                if (puzzleColors[i][j] === color) {
+                  markNo({ row: i, col: j });
+                }
               }
             }
           }
         }
       }
-    }
-  }
+    },
+    [puzzleContent, puzzleColors, size, markNo]
+  );
 
-  function detectSingleColorCol({ col }: { col: number }) {
-    const emptyCellIndices = puzzleColors[col]
-      .map((cell, index) => (cell === null ? index : -1))
-      .filter((index) => index !== -1);
+  const detectSingleColorCol = useCallback(
+    ({ col }: { col: number }) => {
+      const emptyCellIndices = puzzleColors[col]
+        .map((cell, index) => (cell === null ? index : -1))
+        .filter((index) => index !== -1);
 
-    if (emptyCellIndices.length === 0) return;
+      if (emptyCellIndices.length === 0) return;
 
-    const uniqueColors = new Set(
-      emptyCellIndices
-        .map((index) => puzzleColors[index][col])
-        .filter((cell) => cell !== null)
-    );
-    if (uniqueColors.size === 1) {
-      const color = uniqueColors.values().next().value;
-      if (color) {
-        // markNoForColorExceptCol
-        for (let i = 0; i < size; i++) {
-          if (i !== col) {
-            for (let j = 0; j < size; j++) {
-              if (puzzleColors[j][i] === color) {
-                markNo({ row: j, col: i });
+      const uniqueColors = new Set(
+        emptyCellIndices
+          .map((index) => puzzleColors[index][col])
+          .filter((cell) => cell !== null)
+      );
+      if (uniqueColors.size === 1) {
+        const color = uniqueColors.values().next().value;
+        if (color) {
+          // markNoForColorExceptCol
+          for (let i = 0; i < size; i++) {
+            if (i !== col) {
+              for (let j = 0; j < size; j++) {
+                if (puzzleColors[j][i] === color) {
+                  markNo({ row: j, col: i });
+                }
               }
             }
           }
         }
       }
-    }
-  }
+    },
+    [puzzleColors, size, markNo]
+  );
 
-  function detectColorInSingleRowOrCol({ color }: { color: string }) {
-    const cells = colors[color];
+  const detectColorInSingleRowOrCol = useCallback(
+    ({ color }: { color: string }) => {
+      const cells = colors[color];
 
-    const rowIndices = new Set(cells.map((cell) => cell.row));
-    if (rowIndices.size === 1) {
-      const row = rowIndices.values().next().value;
-      if (typeof row === "number") {
-        for (let i = 0; i < size; i++) {
-          if (puzzleColors[row][i] !== color) {
-            markNo({ row, col: i });
+      const rowIndices = new Set(cells.map((cell) => cell.row));
+      if (rowIndices.size === 1) {
+        const row = rowIndices.values().next().value;
+        if (typeof row === "number") {
+          for (let i = 0; i < size; i++) {
+            if (puzzleColors[row][i] !== color) {
+              markNo({ row, col: i });
+            }
           }
         }
       }
-    }
 
-    const colIndices = new Set(cells.map((cell) => cell.col));
-    if (colIndices.size === 1) {
-      const col = colIndices.values().next().value;
-      if (typeof col === "number") {
-        for (let i = 0; i < size; i++) {
-          if (puzzleColors[i][col] !== color) {
-            markNo({ row: i, col });
+      const colIndices = new Set(cells.map((cell) => cell.col));
+      if (colIndices.size === 1) {
+        const col = colIndices.values().next().value;
+        if (typeof col === "number") {
+          for (let i = 0; i < size; i++) {
+            if (puzzleColors[i][col] !== color) {
+              markNo({ row: i, col });
+            }
           }
         }
       }
-    }
-  }
+    },
+    [colors, puzzleColors, size, markNo]
+  );
 
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
@@ -216,7 +241,16 @@ export default function SolvedLayout({
     Object.keys(colors).forEach((color) => {
       detectColorInSingleRowOrCol({ color });
     });
-  }, [puzzleContent]);
+  }, [
+    colors,
+    detectColorInSingleRowOrCol,
+    detectSingleColorCol,
+    detectSingleColorRow,
+    fillSingleEmptyCellInCol,
+    fillSingleEmptyCellInRow,
+    puzzleContent,
+    size,
+  ]);
 
   return (
     <Layout title="Solved Layout">
