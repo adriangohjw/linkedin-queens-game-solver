@@ -62,6 +62,42 @@ export default function SolvedLayout({ size }: { size: number }) {
     }
   }
 
+  function fillFillableRows() {
+    for (let i = 0; i < size; i++) {
+      fillSingleEmptyCellInRow({ row: i });
+    }
+  }
+
+  function fillSingleEmptyCellInRow({ row }: { row: number }) {
+    const currentRowContent = puzzleContent[row];
+
+    const emptyCellIndices = currentRowContent
+      .map((cell, index) => (cell === null ? index : -1))
+      .filter((index) => index !== -1);
+
+    if (emptyCellIndices.length === 1) {
+      markYes({ row, col: emptyCellIndices[0] });
+    }
+  }
+
+  function fillFillableCols() {
+    for (let i = 0; i < size; i++) {
+      fillSingleEmptyCellInCol({ col: i });
+    }
+  }
+
+  function fillSingleEmptyCellInCol({ col }: { col: number }) {
+    const currentColContent = puzzleContent.map((row) => row[col]);
+
+    const emptyCellIndices = currentColContent
+      .map((cell, index) => (cell === null ? index : -1))
+      .filter((index) => index !== -1);
+
+    if (emptyCellIndices.length === 1) {
+      markYes({ row: emptyCellIndices[0], col });
+    }
+  }
+
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -76,6 +112,11 @@ export default function SolvedLayout({ size }: { size: number }) {
     markYes({ row: 6, col: 6 });
     markYes({ row: 4, col: 3 });
   }, []);
+
+  useEffect(() => {
+    fillFillableRows();
+    fillFillableCols();
+  }, [puzzleContent]);
 
   return (
     <Layout title="Solved Layout">
