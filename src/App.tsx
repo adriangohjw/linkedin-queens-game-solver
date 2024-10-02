@@ -4,6 +4,7 @@ import INITIAL_PUZZLE_COLOR from "./InitialPuzzleColor";
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
 import Footer from "./Footer";
+import Disclaimer from "./Disclaimer";
 
 export default function App() {
   const size = 8;
@@ -47,6 +48,7 @@ export default function App() {
         <SolvedLayout size={size} puzzleColors={puzzleColors} />
       </div>
       <Footer />
+      <Disclaimer />
     </div>
   );
 }
