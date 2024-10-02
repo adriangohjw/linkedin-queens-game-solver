@@ -1,7 +1,7 @@
 export default function SolvedLayout() {
   return (
     <div>
-      <h1>Solved Layout</h1>
+      <h2>Solved Layout</h2>
     </div>
   );
 }

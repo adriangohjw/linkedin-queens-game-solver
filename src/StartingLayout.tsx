@@ -1,7 +1,7 @@
 export default function StartingLayout() {
   return (
     <div>
-      <h1>Starting Layout</h1>
+      <h2>Starting Layout</h2>
     </div>
   );
 }
