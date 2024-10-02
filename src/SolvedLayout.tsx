@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { YES, NO } from "./constant";
+import { YES, NO, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -13,6 +13,18 @@ export default function SolvedLayout({
   const [puzzleContent, setPuzzleContent] = useState<(string | null)[][]>(
     Array.from({ length: size }, () => Array.from({ length: size }, () => null))
   );
+
+  let colors: Record<string, { row: number; col: number }[]> =
+    Object.fromEntries(COLOR_OPTIONS.map((color) => [color, []]));
+
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+      const color = puzzleColors[row][col];
+      if (color) {
+        colors[color].push({ row, col });
+      }
+    }
+  }
 
   function markGrid({
     row,

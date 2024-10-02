@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { COLOR_OPTIONS } from "./constant";
 import INITIAL_PUZZLE_COLOR from "./InitialPuzzleColor";
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
@@ -26,18 +25,6 @@ export default function App() {
       newGrid[row][col] = color;
       return newGrid;
     });
-  }
-
-  let colors: Record<string, { row: number; col: number }[]> =
-    Object.fromEntries(COLOR_OPTIONS.map((color) => [color, []]));
-
-  for (let row = 0; row < size; row++) {
-    for (let col = 0; col < size; col++) {
-      const color = puzzleColors[row][col];
-      if (color) {
-        colors[color].push({ row, col });
-      }
-    }
   }
 
   return (
