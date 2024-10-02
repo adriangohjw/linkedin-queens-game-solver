@@ -3,7 +3,13 @@ import { YES, NO } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
-export default function SolvedLayout({ size }: { size: number }) {
+export default function SolvedLayout({
+  size,
+  puzzleColors,
+}: {
+  size: number;
+  puzzleColors: (string | null)[][];
+}) {
   const [puzzleContent, setPuzzleContent] = useState<(string | null)[][]>(
     Array.from({ length: size }, () => Array.from({ length: size }, () => null))
   );
@@ -120,7 +126,12 @@ export default function SolvedLayout({ size }: { size: number }) {
 
   return (
     <Layout title="Solved Layout">
-      <Puzzle size={size} content={puzzleContent} isSolved={isSolved()} />
+      <Puzzle
+        size={size}
+        content={puzzleContent}
+        isSolved={isSolved()}
+        colors={puzzleColors}
+      />
     </Layout>
   );
 }
