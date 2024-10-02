@@ -1,5 +1,6 @@
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
+import Footer from "./Footer";
 
 export default function App() {
   const size = 8;
@@ -11,6 +12,7 @@ export default function App() {
         <StartingLayout size={size} />
         <SolvedLayout size={size} />
       </div>
+      <Footer />
     </div>
   );
 }
