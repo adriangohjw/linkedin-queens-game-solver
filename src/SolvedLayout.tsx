@@ -68,12 +68,6 @@ export default function SolvedLayout({
     }
   }
 
-  function fillFillableRows() {
-    for (let i = 0; i < size; i++) {
-      fillSingleEmptyCellInRow({ row: i });
-    }
-  }
-
   function fillSingleEmptyCellInRow({ row }: { row: number }) {
     const currentRowContent = puzzleContent[row];
 
@@ -83,12 +77,6 @@ export default function SolvedLayout({
 
     if (emptyCellIndices.length === 1) {
       markYes({ row, col: emptyCellIndices[0] });
-    }
-  }
-
-  function fillFillableCols() {
-    for (let i = 0; i < size; i++) {
-      fillSingleEmptyCellInCol({ col: i });
     }
   }
 
@@ -104,6 +92,50 @@ export default function SolvedLayout({
     }
   }
 
+  function detectSingleColorRow({ row }: { row: number }) {
+    const currentRowContent = puzzleColors[row];
+    const uniqueColors = new Set(
+      currentRowContent.filter((cell) => cell !== null)
+    );
+    if (uniqueColors.size === 1) {
+      const color = uniqueColors.values().next().value;
+      if (color) {
+        // markNoForColorExceptRow
+        for (let i = 0; i < size; i++) {
+          if (i !== row) {
+            for (let j = 0; j < size; j++) {
+              if (puzzleColors[i][j] === color) {
+                markNo({ row: i, col: j });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function detectSingleColorCol({ col }: { col: number }) {
+    const currentColContent = puzzleColors.map((row) => row[col]);
+    const uniqueColors = new Set(
+      currentColContent.filter((cell) => cell !== null)
+    );
+    if (uniqueColors.size === 1) {
+      const color = uniqueColors.values().next().value;
+      if (color) {
+        // markNoForColorExceptCol
+        for (let i = 0; i < size; i++) {
+          if (i !== col) {
+            for (let j = 0; j < size; j++) {
+              if (puzzleColors[j][i] === color) {
+                markNo({ row: j, col: i });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -114,8 +146,15 @@ export default function SolvedLayout({
   };
 
   useEffect(() => {
-    fillFillableRows();
-    fillFillableCols();
+    for (let i = 0; i < size; i++) {
+      fillSingleEmptyCellInRow({ row: i });
+      detectSingleColorRow({ row: i });
+    }
+
+    for (let i = 0; i < size; i++) {
+      fillSingleEmptyCellInCol({ col: i });
+      detectSingleColorCol({ col: i });
+    }
   }, [puzzleContent]);
 
   return (
