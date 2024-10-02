@@ -114,12 +114,6 @@ export default function SolvedLayout({
   };
 
   useEffect(() => {
-    markYes({ row: 0, col: 0 });
-    markYes({ row: 6, col: 6 });
-    markYes({ row: 4, col: 3 });
-  }, []);
-
-  useEffect(() => {
     fillFillableRows();
     fillFillableCols();
   }, [puzzleContent]);
