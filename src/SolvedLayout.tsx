@@ -221,6 +221,87 @@ export default function SolvedLayout({
     [colors, puzzleColors, size, markNo]
   );
 
+  const getEmptyCells = useCallback(
+    ({ color }: { color: string }) => {
+      const cells = colors[color];
+      return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+    },
+    [colors, puzzleContent]
+  );
+
+  const detectTwoAdjacentEmptyCellsInRow = useCallback(
+    ({
+      color,
+      row,
+      cells,
+    }: {
+      color: string;
+      row: number;
+      cells: { row: number; col: number }[];
+    }) => {
+      const colIndices = cells.map((cell) => cell.col);
+      const uniqueColIndices = Array.from(new Set(colIndices));
+      if (uniqueColIndices.length !== 2) return;
+
+      const [firstCol, secondCol] = uniqueColIndices;
+      if (Math.abs(firstCol - secondCol) !== 1) return;
+
+      markNo({ row: row - 1, col: firstCol });
+      markNo({ row: row + 1, col: firstCol });
+      markNo({ row: row - 1, col: secondCol });
+      markNo({ row: row + 1, col: secondCol });
+    },
+    [markNo]
+  );
+
+  const detectTwoAdjacentEmptyCellsInCol = useCallback(
+    ({
+      color,
+      col,
+      cells,
+    }: {
+      color: string;
+      col: number;
+      cells: { row: number; col: number }[];
+    }) => {
+      const rowIndices = cells.map((cell) => cell.row);
+      const uniqueRowIndices = Array.from(new Set(rowIndices));
+      if (uniqueRowIndices.length !== 2) return;
+
+      const [firstRow, secondRow] = uniqueRowIndices;
+      if (Math.abs(firstRow - secondRow) !== 1) return;
+
+      markNo({ row: firstRow, col: col - 1 });
+      markNo({ row: firstRow, col: col + 1 });
+      markNo({ row: secondRow, col: col - 1 });
+      markNo({ row: secondRow, col: col + 1 });
+    },
+    [markNo]
+  );
+
+  const detectTwoAdjacentEmptyCells = useCallback(
+    ({ color }: { color: string }) => {
+      const emptyCells = getEmptyCells({ color });
+      if (emptyCells.length !== 2) return;
+
+      detectTwoAdjacentEmptyCellsInCol({
+        color,
+        col: emptyCells[0].col,
+        cells: emptyCells,
+      });
+      detectTwoAdjacentEmptyCellsInRow({
+        color,
+        row: emptyCells[0].row,
+        cells: emptyCells,
+      });
+    },
+    [
+      getEmptyCells,
+      detectTwoAdjacentEmptyCellsInCol,
+      detectTwoAdjacentEmptyCellsInRow,
+    ]
+  );
+
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -240,6 +321,7 @@ export default function SolvedLayout({
 
     Object.keys(colors).forEach((color) => {
       detectColorInSingleRowOrCol({ color });
+      detectTwoAdjacentEmptyCells({ color });
     });
   }, [
     colors,
