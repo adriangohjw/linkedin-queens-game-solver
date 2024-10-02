@@ -296,6 +296,71 @@ export default function SolvedLayout({
     ]
   );
 
+  const detectThreeAdjacentEmptyCellsInRow = useCallback(
+    ({
+      row,
+      cells,
+    }: {
+      row: number;
+      cells: { row: number; col: number }[];
+    }) => {
+      const colIndices = cells.map((cell) => cell.col);
+      let uniqueColIndices = Array.from(new Set(colIndices));
+      if (uniqueColIndices.length !== 3) return;
+
+      uniqueColIndices.sort((a, b) => a - b);
+      const [firstCol, secondCol, thirdCol] = uniqueColIndices;
+      if (firstCol - secondCol !== 1 || secondCol - thirdCol !== 1) return;
+
+      markNo({ row: row - 1, col: secondCol });
+      markNo({ row: row + 1, col: secondCol });
+    },
+    [markNo]
+  );
+
+  const detectThreeAdjacentEmptyCellsInCol = useCallback(
+    ({
+      col,
+      cells,
+    }: {
+      col: number;
+      cells: { row: number; col: number }[];
+    }) => {
+      const rowIndices = cells.map((cell) => cell.row);
+      let uniqueRowIndices = Array.from(new Set(rowIndices));
+      if (uniqueRowIndices.length !== 3) return;
+
+      uniqueRowIndices.sort((a, b) => a - b);
+      const [firstRow, secondRow, thirdRow] = uniqueRowIndices;
+      if (secondRow - firstRow !== 1 || thirdRow - secondRow !== 1) return;
+
+      markNo({ row: secondRow, col: col - 1 });
+      markNo({ row: secondRow, col: col + 1 });
+    },
+    [markNo]
+  );
+
+  const detectThreeAdjacentEmptyCells = useCallback(
+    ({ color }: { color: string }) => {
+      const emptyCells = getEmptyCells({ color });
+      if (emptyCells.length !== 3) return;
+
+      detectThreeAdjacentEmptyCellsInCol({
+        col: emptyCells[0].col,
+        cells: emptyCells,
+      });
+      detectThreeAdjacentEmptyCellsInRow({
+        row: emptyCells[0].row,
+        cells: emptyCells,
+      });
+    },
+    [
+      getEmptyCells,
+      detectThreeAdjacentEmptyCellsInCol,
+      detectThreeAdjacentEmptyCellsInRow,
+    ]
+  );
+
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -316,12 +381,15 @@ export default function SolvedLayout({
     Object.keys(colors).forEach((color) => {
       detectColorInSingleRowOrCol({ color });
       detectTwoAdjacentEmptyCells({ color });
+      detectThreeAdjacentEmptyCells({ color });
     });
   }, [
     colors,
     detectColorInSingleRowOrCol,
     detectSingleColorCol,
     detectSingleColorRow,
+    detectThreeAdjacentEmptyCells,
+    detectTwoAdjacentEmptyCells,
     fillSingleEmptyCellInCol,
     fillSingleEmptyCellInRow,
     puzzleContent,
