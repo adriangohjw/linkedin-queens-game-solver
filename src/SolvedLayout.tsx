@@ -204,8 +204,6 @@ export default function SolvedLayout({
     });
   }, [puzzleContent]);
 
-  console.log(puzzleContent);
-
   return (
     <Layout title="Solved Layout">
       <Puzzle
