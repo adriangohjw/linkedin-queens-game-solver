@@ -24,8 +24,12 @@ export default function SolvedLayout({
     content: string;
   }) {
     setPuzzleContent((prev) => {
-      const newGrid = [...prev];
-      newGrid[row][col] = content;
+      if (prev[row][col] === content) {
+        return prev; // Return the same state if content hasn't changed
+      }
+      const newGrid = prev.map((r, i) =>
+        i === row ? [...r.slice(0, col), content, ...r.slice(col + 1)] : r
+      );
       return newGrid;
     });
   }
