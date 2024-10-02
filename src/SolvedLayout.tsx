@@ -231,11 +231,9 @@ export default function SolvedLayout({
 
   const detectTwoAdjacentEmptyCellsInRow = useCallback(
     ({
-      color,
       row,
       cells,
     }: {
-      color: string;
       row: number;
       cells: { row: number; col: number }[];
     }) => {
@@ -256,11 +254,9 @@ export default function SolvedLayout({
 
   const detectTwoAdjacentEmptyCellsInCol = useCallback(
     ({
-      color,
       col,
       cells,
     }: {
-      color: string;
       col: number;
       cells: { row: number; col: number }[];
     }) => {
@@ -285,12 +281,10 @@ export default function SolvedLayout({
       if (emptyCells.length !== 2) return;
 
       detectTwoAdjacentEmptyCellsInCol({
-        color,
         col: emptyCells[0].col,
         cells: emptyCells,
       });
       detectTwoAdjacentEmptyCellsInRow({
-        color,
         row: emptyCells[0].row,
         cells: emptyCells,
       });
