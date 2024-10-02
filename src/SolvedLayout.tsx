@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { YES, NO, YELLOW, BROWN, COLOR_OPTIONS } from "./constant";
+import { YES, NO, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
