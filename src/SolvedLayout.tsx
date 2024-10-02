@@ -192,11 +192,8 @@ export default function SolvedLayout({
   useEffect(() => {
     for (let i = 0; i < size; i++) {
       fillSingleEmptyCellInRow({ row: i });
-      detectSingleColorRow({ row: i });
-    }
-
-    for (let i = 0; i < size; i++) {
       fillSingleEmptyCellInCol({ col: i });
+      detectSingleColorRow({ row: i });
       detectSingleColorCol({ col: i });
     }
 
@@ -204,6 +201,8 @@ export default function SolvedLayout({
       detectColorInSingleRowOrCol({ color });
     });
   }, [puzzleContent]);
+
+  console.log(puzzleContent);
 
   return (
     <Layout title="Solved Layout">
