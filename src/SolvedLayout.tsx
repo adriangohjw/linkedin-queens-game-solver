@@ -111,9 +111,16 @@ export default function SolvedLayout({
   }
 
   function detectSingleColorRow({ row }: { row: number }) {
-    const currentRowContent = puzzleColors[row];
+    const emptyCellIndices = puzzleContent[row]
+      .map((cell, index) => (cell === null ? index : -1))
+      .filter((index) => index !== -1);
+
+    if (emptyCellIndices.length === 0) return;
+
     const uniqueColors = new Set(
-      currentRowContent.filter((cell) => cell !== null)
+      emptyCellIndices
+        .map((index) => puzzleColors[row][index])
+        .filter((cell) => cell !== null)
     );
     if (uniqueColors.size === 1) {
       const color = uniqueColors.values().next().value;
@@ -133,9 +140,16 @@ export default function SolvedLayout({
   }
 
   function detectSingleColorCol({ col }: { col: number }) {
-    const currentColContent = puzzleColors.map((row) => row[col]);
+    const emptyCellIndices = puzzleColors[col]
+      .map((cell, index) => (cell === null ? index : -1))
+      .filter((index) => index !== -1);
+
+    if (emptyCellIndices.length === 0) return;
+
     const uniqueColors = new Set(
-      currentColContent.filter((cell) => cell !== null)
+      emptyCellIndices
+        .map((index) => puzzleColors[index][col])
+        .filter((cell) => cell !== null)
     );
     if (uniqueColors.size === 1) {
       const color = uniqueColors.values().next().value;
