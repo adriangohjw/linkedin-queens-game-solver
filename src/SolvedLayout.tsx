@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { YES, NO, COLOR_OPTIONS } from "./constant";
+import { YES, NO, YELLOW, BROWN, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -152,6 +152,34 @@ export default function SolvedLayout({
     }
   }
 
+  function detectColorInSingleRowOrCol({ color }: { color: string }) {
+    const cells = colors[color];
+
+    const rowIndices = new Set(cells.map((cell) => cell.row));
+    if (rowIndices.size === 1) {
+      const row = rowIndices.values().next().value;
+      if (typeof row === "number") {
+        for (let i = 0; i < size; i++) {
+          if (puzzleColors[row][i] !== color) {
+            markNo({ row, col: i });
+          }
+        }
+      }
+    }
+
+    const colIndices = new Set(cells.map((cell) => cell.col));
+    if (colIndices.size === 1) {
+      const col = colIndices.values().next().value;
+      if (typeof col === "number") {
+        for (let i = 0; i < size; i++) {
+          if (puzzleColors[i][col] !== color) {
+            markNo({ row: i, col });
+          }
+        }
+      }
+    }
+  }
+
   const isSolved = () => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -171,6 +199,10 @@ export default function SolvedLayout({
       fillSingleEmptyCellInCol({ col: i });
       detectSingleColorCol({ col: i });
     }
+
+    Object.keys(colors).forEach((color) => {
+      detectColorInSingleRowOrCol({ color });
+    });
   }, [puzzleContent]);
 
   return (
