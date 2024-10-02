@@ -36,9 +36,8 @@ export default function SolvedLayout({
     content: string;
   }) {
     setPuzzleContent((prev) => {
-      const newGrid = prev.map((r, i) =>
-        i === row ? [...r.slice(0, col), content, ...r.slice(col + 1)] : r
-      );
+      const newGrid = [...prev];
+      newGrid[row][col] = content;
       return newGrid;
     });
   }
