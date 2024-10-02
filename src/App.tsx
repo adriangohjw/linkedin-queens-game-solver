@@ -42,8 +42,8 @@ export default function App() {
 
   return (
     <div className="text-center m-4 p-4">
-      <h1 className="text-3xl font-bold">LinkedIn Queens Game Solver</h1>
-      <div className="flex flex-row justify-center items-center mt-4">
+      <h1 className="text-3xl md:text-3xl text-2xl font-bold">LinkedIn Queens Game Solver</h1>
+      <div className="flex flex-col md:flex-row justify-center items-center mt-4">
         <StartingLayout size={size} puzzleColors={puzzleColors} />
         <SolvedLayout size={size} puzzleColors={puzzleColors} />
       </div>
