@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
-import { PuzzleType } from "./types";
+import { PuzzleType, PuzzleOptionType } from "./types";
 
 export default function LayoutTemplateButtons({
   options,
   setPuzzleColors,
 }: {
-  options: string[][][];
+  options: PuzzleOptionType;
   setPuzzleColors: Dispatch<SetStateAction<PuzzleType>>;
 }) {
   return (
