@@ -459,6 +459,7 @@ export default function SolvedLayout({
         isSolved={isSolved()}
         colors={puzzleColors}
       />
+      {isSolved() && <p className="text-4xl text-green-500 font-bold">Solved</p>}
     </Layout>
   );
 }
