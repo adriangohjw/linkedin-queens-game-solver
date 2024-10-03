@@ -12,15 +12,22 @@ import Disclaimer from "./Disclaimer";
 export default function App() {
   const [layoutSelected, setLayoutSelected] = useState<number | null>(2);
   const [puzzleColors, setPuzzleColors] = useState<ColorType[][]>(
-    INITIAL_PUZZLE_OPTIONS[layoutSelected as unknown as number]
+    // duplicate to prevent overwriting the initial value
+    INITIAL_PUZZLE_OPTIONS[layoutSelected as unknown as number].map((row) => [
+      ...row,
+    ])
   );
   const [selectedColor, setSelectedColor] = useState<ColorType>(
     COLOR_OPTIONS[0]
   );
 
   useEffect(() => {
-    layoutSelected !== null &&
-      setPuzzleColors(INITIAL_PUZZLE_OPTIONS[layoutSelected]);
+    if (layoutSelected === null) return;
+
+    setPuzzleColors(
+      // duplicate to prevent overwriting the initial value
+      INITIAL_PUZZLE_OPTIONS[layoutSelected].map((row) => [...row])
+    );
   }, [layoutSelected]);
 
   const size = puzzleColors.length;
@@ -55,6 +62,7 @@ export default function App() {
         <div className="justify-center items-center mt-2 h-full">
           <div className="flex-1 flex flex-col md:flex-row items-stretch">
             <StartingLayout
+              key={`starting-${JSON.stringify(puzzleColors)}`}
               size={size}
               puzzleColors={puzzleColors}
               setPuzzleColor={setPuzzleColor}
@@ -62,7 +70,7 @@ export default function App() {
               setSelectedColor={setSelectedColor}
             />
             <SolvedLayout
-              key={JSON.stringify(puzzleColors)}
+              key={`solved-${JSON.stringify(puzzleColors)}`}
               size={size}
               puzzleColors={puzzleColors}
             />
