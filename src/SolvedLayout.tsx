@@ -370,6 +370,21 @@ export default function SolvedLayout({
         if (puzzleContent[i][j] === null) return false;
       }
     }
+
+    // check every row only one YES
+    for (let i = 0; i < size; i++) {
+      const yesCount = puzzleContent[i].filter((cell) => cell === YES).length;
+      if (yesCount !== 1) return false;
+    }
+
+    // check every col has only one YES
+    for (let j = 0; j < size; j++) {
+      const yesCount = puzzleContent
+        .map((row) => row[j])
+        .filter((cell) => cell === YES).length;
+      if (yesCount !== 1) return false;
+    }
+
     return true;
   };
 
