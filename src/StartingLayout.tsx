@@ -2,6 +2,7 @@ import { CellType, ColorType } from "./types";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 import ColorPicker from "./ColorPicker";
+import SizeSlider from "./SizeSlider";
 
 export default function StartingLayout({
   size,
@@ -9,12 +10,14 @@ export default function StartingLayout({
   setPuzzleColor,
   selectedColor,
   setSelectedColor,
+  clearBoard,
 }: {
   size: number;
   puzzleColors: ColorType[][];
   setPuzzleColor: ({ cell }: { cell: CellType }) => void;
   selectedColor: ColorType;
   setSelectedColor: (color: ColorType) => void;
+  clearBoard: ({ size }: { size?: number }) => void;
 }) {
   return (
     <Layout title="Starting Layout">
@@ -27,6 +30,7 @@ export default function StartingLayout({
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
       />
+      <SizeSlider size={size} clearBoard={clearBoard} />
     </Layout>
   );
 }

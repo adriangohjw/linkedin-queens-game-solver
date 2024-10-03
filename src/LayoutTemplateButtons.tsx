@@ -8,7 +8,7 @@ export default function LayoutTemplateButtons({
 }: {
   layoutSelected: number | null;
   setLayoutSelected: Dispatch<SetStateAction<number | null>>;
-  clearBoard: () => void;
+  clearBoard: ({ size }: { size?: number }) => void;
 }) {
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-center">
@@ -25,7 +25,7 @@ export default function LayoutTemplateButtons({
         <TemplateButton
           key="clear"
           selected={false}
-          onClick={() => clearBoard()}
+          onClick={() => clearBoard({})}
           text={"Clear"}
         />
       </div>

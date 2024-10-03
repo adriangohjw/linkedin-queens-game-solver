@@ -3,6 +3,7 @@ import { ColorType, CellType } from "./types";
 import { COLOR_OPTIONS } from "./constant";
 import {
   INITIAL_PUZZLE_OPTIONS,
+  DEFAULT_SIZE,
   generateInitialBlankPuzzle,
 } from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
@@ -14,7 +15,7 @@ import Disclaimer from "./Disclaimer";
 
 const initializePuzzleColors = (layout: number | null): ColorType[][] => {
   return layout === null
-    ? generateInitialBlankPuzzle({ size: 8 })
+    ? generateInitialBlankPuzzle({ size: DEFAULT_SIZE })
     : INITIAL_PUZZLE_OPTIONS[layout].map((row) => [...row]);
 };
 
@@ -26,12 +27,11 @@ export default function App() {
   const [selectedColor, setSelectedColor] = useState<ColorType>(
     COLOR_OPTIONS[0]
   );
+  const size = puzzleColors.length;
 
   useEffect(() => {
     setPuzzleColors(initializePuzzleColors(layoutSelected));
   }, [layoutSelected]);
-
-  const size = puzzleColors.length;
 
   const setPuzzleColor = useCallback(
     ({ cell }: { cell: CellType }): void => {
@@ -44,9 +44,9 @@ export default function App() {
     [selectedColor]
   );
 
-  const clearBoard = (): void => {
+  const clearBoard = ({ size }: { size?: number }): void => {
     setLayoutSelected(null);
-    setPuzzleColors(generateInitialBlankPuzzle({ size: 8 }));
+    setPuzzleColors(generateInitialBlankPuzzle({ size: size ?? DEFAULT_SIZE }));
   };
 
   return (
@@ -75,6 +75,7 @@ export default function App() {
               setPuzzleColor={setPuzzleColor}
               selectedColor={selectedColor}
               setSelectedColor={setSelectedColor}
+              clearBoard={clearBoard}
             />
             <SolvedLayout
               key={`solved-${JSON.stringify(puzzleColors)}`}

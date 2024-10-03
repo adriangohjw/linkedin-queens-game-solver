@@ -80,6 +80,8 @@ export const INITIAL_PUZZLE_OPTIONS: ColorType[][][] = [
   INITIAL_PUZZLE_COLOR_5,
 ];
 
+export const DEFAULT_SIZE = 8;
+
 export function generateInitialBlankPuzzle({
   size,
 }: {
