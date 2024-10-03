@@ -106,3 +106,15 @@ export const generateIsSolved = ({
 
   return true;
 };
+
+export const getEmptyCellsUtil = (
+  colors: Record<string, CellType[]>,
+  puzzleContent: CellContentType[][],
+  isAllPuzzleColorsFilled: boolean,
+  color: ColorType
+): CellType[] => {
+  if (!isAllPuzzleColorsFilled) return [];
+
+  const cells: CellType[] = colors[color as string];
+  return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+};

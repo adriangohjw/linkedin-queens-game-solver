@@ -8,7 +8,8 @@ import {
   generatePuzzleColorsFilledCount,
   generateIsSolved,
   generateUniquePuzzleColorsCount,
-} from "./puzzleUtils/common";
+  getEmptyCellsUtil,
+} from "./puzzleUtils/util";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -37,10 +38,12 @@ export default function SolvedLayout({
 
   const getEmptyCells = useCallback(
     ({ color }: { color: ColorType }): CellType[] => {
-      if (!isAllPuzzleColorsFilled) return [];
-
-      const cells: CellType[] = colors[color as string];
-      return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+      return getEmptyCellsUtil(
+        colors,
+        puzzleContent,
+        isAllPuzzleColorsFilled,
+        color
+      );
     },
     [colors, puzzleContent, isAllPuzzleColorsFilled]
   );
