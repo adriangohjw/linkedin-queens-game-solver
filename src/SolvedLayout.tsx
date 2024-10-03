@@ -26,6 +26,14 @@ export default function SolvedLayout({
     }
   }
 
+  const getEmptyCells = useCallback(
+    ({ color }: { color: string }) => {
+      const cells = colors[color];
+      return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+    },
+    [colors, puzzleContent]
+  );
+
   const markGrid = useCallback(
     ({ row, col, content }: { row: number; col: number; content: string }) => {
       setPuzzleContent((prev) => {
@@ -195,7 +203,7 @@ export default function SolvedLayout({
 
   const detectColorInSingleRowOrCol = useCallback(
     ({ color }: { color: string }) => {
-      const cells = colors[color];
+      const cells = getEmptyCells({ color });
 
       const rowIndices = new Set(cells.map((cell) => cell.row));
       if (rowIndices.size === 1) {
@@ -220,16 +228,10 @@ export default function SolvedLayout({
           }
         }
       }
-    },
-    [colors, puzzleColors, size, markNo]
-  );
 
-  const getEmptyCells = useCallback(
-    ({ color }: { color: string }) => {
-      const cells = colors[color];
-      return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+      console.log(111, color, cells, rowIndices, colIndices);
     },
-    [colors, puzzleContent]
+    [getEmptyCells, size, puzzleColors, markNo]
   );
 
   const detectTwoAdjacentEmptyCellsInRow = useCallback(
