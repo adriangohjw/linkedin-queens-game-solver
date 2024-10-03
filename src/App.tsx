@@ -19,7 +19,7 @@ const initializePuzzleColors = (layout: number | null): ColorType[][] => {
 };
 
 export default function App() {
-  const [layoutSelected, setLayoutSelected] = useState<number | null>(2);
+  const [layoutSelected, setLayoutSelected] = useState<number | null>(null);
   const [puzzleColors, setPuzzleColors] = useState<ColorType[][]>(
     initializePuzzleColors(layoutSelected)
   );
