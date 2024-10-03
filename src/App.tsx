@@ -40,7 +40,7 @@ export default function App() {
       </p>
       <RulesButton />
       <div className="mt-4">
-        <div className="flex justify-start">
+        <div className="flex justify-center md:justify-start">
           <LayoutTemplateButtons
             options={INITIAL_PUZZLE_OPTIONS}
             setPuzzleColors={setPuzzleColors}
