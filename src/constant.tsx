@@ -38,7 +38,7 @@ export const COLOR_TO_CODE_MAPPING: Record<string, string> = {
   [PINK]: "#DE9FBF",
 };
 
-export function getColorCode(color: string | null | undefined) {
+export function getColorCode(color: string | null | undefined): string {
   if (color === null || color === undefined) {
     return "#FFFFFF"; // white
   }
