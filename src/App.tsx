@@ -1,5 +1,5 @@
 import { useState } from "react";
-import INITIAL_PUZZLE_COLOR from "./InitialPuzzleColor";
+import INITIAL_PUZZLE_OPTIONS from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
@@ -7,10 +7,11 @@ import Footer from "./Footer";
 import Disclaimer from "./Disclaimer";
 
 export default function App() {
-  const size = 8;
+  const [puzzleColors, setPuzzleColors] = useState<(string | null)[][]>(
+    INITIAL_PUZZLE_OPTIONS[0]
+  );
 
-  const [puzzleColors, setPuzzleColors] =
-    useState<(string | null)[][]>(INITIAL_PUZZLE_COLOR);
+  const size = puzzleColors.length;
 
   function setPuzzleColor({
     row,
