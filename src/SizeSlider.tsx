@@ -13,7 +13,7 @@ export default function SizeSlider({
       <input
         id="size-slider"
         type="range"
-        min="6"
+        min="5"
         max="10"
         value={size}
         onChange={(event) => {
