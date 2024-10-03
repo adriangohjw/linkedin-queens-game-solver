@@ -27,7 +27,7 @@ export default function App() {
   const [selectedColor, setSelectedColor] = useState<ColorType>(
     COLOR_OPTIONS[0]
   );
-  const size = puzzleColors.length;
+  const currentSize = puzzleColors.length;
 
   useEffect(() => {
     setPuzzleColors(initializePuzzleColors(layoutSelected));
@@ -46,7 +46,7 @@ export default function App() {
 
   const clearBoard = ({ size }: { size?: number }): void => {
     setLayoutSelected(null);
-    setPuzzleColors(generateInitialBlankPuzzle({ size: size ?? DEFAULT_SIZE }));
+    setPuzzleColors(generateInitialBlankPuzzle({ size: size ?? currentSize }));
   };
 
   return (
@@ -67,7 +67,7 @@ export default function App() {
           <div className="flex-1 flex flex-col md:flex-row items-stretch">
             <StartingLayout
               key={`starting-${JSON.stringify(puzzleColors)}`}
-              size={size}
+              size={currentSize}
               puzzleColors={puzzleColors}
               setPuzzleColor={setPuzzleColor}
               selectedColor={selectedColor}
@@ -76,7 +76,7 @@ export default function App() {
             />
             <SolvedLayout
               key={`solved-${JSON.stringify(puzzleColors)}`}
-              size={size}
+              size={currentSize}
               puzzleColors={puzzleColors}
             />
           </div>
