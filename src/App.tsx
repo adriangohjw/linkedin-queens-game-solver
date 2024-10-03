@@ -45,7 +45,7 @@ export default function App() {
         Assumptions: The starting layout is correct.
       </p>
       <RulesButton />
-      <div className="mt-4">
+      <div className="mt-4 max-w-[1200px] mx-auto">
         <div className="flex justify-center md:justify-start">
           <LayoutTemplateButtons
             layoutSelected={layoutSelected}
