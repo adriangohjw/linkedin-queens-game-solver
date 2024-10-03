@@ -18,6 +18,12 @@ export default function Puzzle({
     <div key={rowIndex} className="flex flex-row">
       {Array.from({ length: size }, (_, colIndex) => {
         const cellContent: ColorType = content?.[rowIndex]?.[colIndex] ?? null;
+        const triggerSetPuzzleColor = (): void => {
+          setPuzzleColor &&
+            setPuzzleColor({
+              cell: { row: rowIndex, col: colIndex } as CellType,
+            });
+        };
         return (
           <div
             key={colIndex}
@@ -27,11 +33,10 @@ export default function Puzzle({
             style={{
               backgroundColor: getColorCode(colors?.[rowIndex]?.[colIndex]),
             }}
-            onClick={() => {
-              setPuzzleColor &&
-                setPuzzleColor({
-                  cell: { row: rowIndex, col: colIndex } as CellType,
-                });
+            onClick={() => triggerSetPuzzleColor()}
+            onMouseEnter={(e) => {
+              // Check if the left mouse button is pressed
+              e.buttons === 1 && triggerSetPuzzleColor();
             }}
           >
             <div className={cellContent === YES ? "text-xl" : "text-3xl"}>
