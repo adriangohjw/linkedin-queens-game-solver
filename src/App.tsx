@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ColorType, CellType } from "./types";
 import { COLOR_OPTIONS } from "./constant";
-import INITIAL_PUZZLE_OPTIONS from "./InitialPuzzleOptions";
+import { INITIAL_PUZZLE_OPTIONS } from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
 import LayoutTemplateButtons from "./LayoutTemplateButtons";
 import StartingLayout from "./StartingLayout";

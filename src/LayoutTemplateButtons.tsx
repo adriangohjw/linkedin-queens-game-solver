@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import INITIAL_PUZZLE_OPTIONS from "./InitialPuzzleOptions";
+import { INITIAL_PUZZLE_OPTIONS } from "./InitialPuzzleOptions";
 
 export default function LayoutTemplateButtons({
   layoutSelected,
@@ -23,7 +23,7 @@ export default function LayoutTemplateButtons({
         <TemplateButton
           key="clear"
           selected={false}
-          onClick={() => console.log(123)}
+          onClick={() => setLayoutSelected(null)}
           text={"Clear"}
         />
       </div>
