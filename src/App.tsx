@@ -1,5 +1,6 @@
 import { useState } from "react";
 import INITIAL_PUZZLE_COLOR from "./InitialPuzzleColor";
+import RulesButton from "./RulesButton";
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
 import Footer from "./Footer";
@@ -35,6 +36,7 @@ export default function App() {
       <p className="mt-4 text-sm">
         Assumptions: The starting layout is correct.
       </p>
+      <RulesButton />
       <div className="flex flex-col md:flex-row justify-center items-center mt-4">
         <StartingLayout size={size} puzzleColors={puzzleColors} />
         <SolvedLayout size={size} puzzleColors={puzzleColors} />
