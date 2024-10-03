@@ -54,9 +54,6 @@ export default function App() {
       <h1 className="text-3xl md:text-3xl text-2xl font-bold">
         LinkedIn Queens Game Solver
       </h1>
-      <p className="mt-4 text-sm">
-        Assumptions: The starting layout is correct.
-      </p>
       <RulesButton />
       <div className="mt-4 max-w-[1200px] mx-auto">
         <div className="flex justify-center md:justify-start">
