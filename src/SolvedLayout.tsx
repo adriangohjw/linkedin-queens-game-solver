@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { PuzzleType } from "./types";
+import { CellType, CellContentType, ColorType } from "./types";
 import { YES, NO, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
@@ -9,18 +9,19 @@ export default function SolvedLayout({
   puzzleColors,
 }: {
   size: number;
-  puzzleColors: PuzzleType;
+  puzzleColors: ColorType[][];
 }) {
-  const [puzzleContent, setPuzzleContent] = useState<PuzzleType>(() =>
+  const [puzzleContent, setPuzzleContent] = useState<CellContentType[][]>(() =>
     Array.from({ length: size }, () => Array.from({ length: size }, () => null))
   );
 
-  let colors: Record<string, { row: number; col: number }[]> =
-    Object.fromEntries(COLOR_OPTIONS.map((color) => [color, []]));
+  let colors: Record<string, CellType[]> = Object.fromEntries(
+    COLOR_OPTIONS.map((color) => [color, []])
+  );
 
   for (let row = 0; row < size; row++) {
     for (let col = 0; col < size; col++) {
-      const color = puzzleColors[row][col];
+      const color: ColorType = puzzleColors[row][col];
       if (color) {
         colors[color].push({ row, col });
       }
@@ -28,18 +29,18 @@ export default function SolvedLayout({
   }
 
   const getEmptyCells = useCallback(
-    ({ color }: { color: string }) => {
-      const cells = colors[color];
+    ({ color }: { color: ColorType }): CellType[] => {
+      const cells: CellType[] = colors[color as string];
       return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
     },
     [colors, puzzleContent]
   );
 
   const markGrid = useCallback(
-    ({ row, col, content }: { row: number; col: number; content: string }) => {
+    ({ cell, content }: { cell: CellType; content: CellContentType }): void => {
       setPuzzleContent((prev) => {
-        const newGrid = [...prev];
-        newGrid[row][col] = content;
+        const newGrid: CellContentType[][] = [...prev];
+        newGrid[cell.row][cell.col] = content;
         return newGrid;
       });
     },
@@ -47,27 +48,27 @@ export default function SolvedLayout({
   );
 
   const markNo = useCallback(
-    ({ row, col }: { row: number; col: number }) => {
-      if (row < 0 || row >= size || col < 0 || col >= size) {
-        return;
-      }
-      if (puzzleContent[row][col] === NO) return;
-      if (puzzleContent[row][col] === YES) return;
+    ({ cell }: { cell: CellType }): void => {
+      if (cell.row < 0 || cell.row >= size) return;
+      if (cell.col < 0 || cell.col >= size) return;
+      if (puzzleContent[cell.row][cell.col] === NO) return;
+      if (puzzleContent[cell.row][cell.col] === YES) return;
 
-      markGrid({ row, col, content: NO });
+      markGrid({ cell, content: NO });
     },
     [size, puzzleContent, markGrid]
   );
 
   const markSurroundingNo = useCallback(
-    ({ row, col }: { row: number; col: number }) => {
+    ({ cell }: { cell: CellType }): void => {
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           if (i === 0 && j === 0) continue;
-          const newRow = row + i;
-          const newCol = col + j;
+
+          const newRow: number = cell.row + i;
+          const newCol: number = cell.col + j;
           if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
-            markNo({ row: newRow, col: newCol });
+            markNo({ cell: { row: newRow, col: newCol } as CellType });
           }
         }
       }
@@ -76,20 +77,22 @@ export default function SolvedLayout({
   );
 
   const markRowNo = useCallback(
-    ({ row, excludeCol }: { row: number; excludeCol: number }) => {
+    ({ row, excludeCol }: { row: number; excludeCol: number }): void => {
       for (let i = 0; i < size; i++) {
         if (i === excludeCol) continue;
-        markNo({ row, col: i });
+
+        markNo({ cell: { row, col: i } as CellType });
       }
     },
     [markNo, size]
   );
 
   const markColNo = useCallback(
-    ({ col, excludeRow }: { col: number; excludeRow: number }) => {
+    ({ col, excludeRow }: { col: number; excludeRow: number }): void => {
       for (let i = 0; i < size; i++) {
         if (i === excludeRow) continue;
-        markNo({ row: i, col });
+
+        markNo({ cell: { row: i, col } as CellType });
       }
     },
     [markNo, size]
@@ -101,31 +104,28 @@ export default function SolvedLayout({
       excludedCell,
     }: {
       color: string;
-      excludedCell: { row: number; col: number };
-    }) => {
-      const remainingEmptyCells = getEmptyCells({ color }).filter(
+      excludedCell: CellType;
+    }): void => {
+      const remainingEmptyCells: CellType[] = getEmptyCells({ color }).filter(
         (cell) => cell.row !== excludedCell.row || cell.col !== excludedCell.col
       );
-      remainingEmptyCells.forEach((cell) => {
-        markNo({ row: cell.row, col: cell.col });
-      });
+      remainingEmptyCells.forEach((cell) => markNo({ cell }));
     },
     [getEmptyCells, markNo]
   );
 
   const markYes = useCallback(
-    ({ row, col }: { row: number; col: number }) => {
-      if (puzzleContent[row][col] === YES) {
-        return;
-      }
-      markGrid({ row, col, content: YES });
+    ({ cell }: { cell: CellType }): void => {
+      if (puzzleContent[cell.row][cell.col] === YES) return;
+
+      markGrid({ cell, content: YES });
       markAllOtherSameColorCellsNo({
-        color: puzzleColors[row][col] as string,
-        excludedCell: { row, col },
+        color: puzzleColors[cell.row][cell.col] as string,
+        excludedCell: cell,
       });
-      markSurroundingNo({ row, col });
-      markRowNo({ row, excludeCol: col });
-      markColNo({ col, excludeRow: row });
+      markSurroundingNo({ cell });
+      markRowNo({ row: cell.row, excludeCol: cell.col });
+      markColNo({ col: cell.col, excludeRow: cell.row });
     },
     [
       puzzleContent,
@@ -139,57 +139,59 @@ export default function SolvedLayout({
   );
 
   const fillSingleEmptyCellInRow = useCallback(
-    ({ row }: { row: number }) => {
-      const currentRowContent = puzzleContent[row];
+    ({ row }: { row: number }): void => {
+      const currentRowContent: CellContentType[] = puzzleContent[row];
 
-      const emptyCellIndices = currentRowContent
+      const emptyCellIndices: number[] = currentRowContent
         .map((cell, index) => (cell === null ? index : -1))
         .filter((index) => index !== -1);
 
       if (emptyCellIndices.length === 1) {
-        markYes({ row, col: emptyCellIndices[0] });
+        markYes({ cell: { row, col: emptyCellIndices[0] } as CellType });
       }
     },
     [puzzleContent, markYes]
   );
 
   const fillSingleEmptyCellInCol = useCallback(
-    ({ col }: { col: number }) => {
-      const currentColContent = puzzleContent.map((row) => row[col]);
+    ({ col }: { col: number }): void => {
+      const currentColContent: CellContentType[] = puzzleContent.map(
+        (row) => row[col]
+      );
 
-      const emptyCellIndices = currentColContent
+      const emptyCellIndices: number[] = currentColContent
         .map((cell, index) => (cell === null ? index : -1))
         .filter((index) => index !== -1);
 
       if (emptyCellIndices.length === 1) {
-        markYes({ row: emptyCellIndices[0], col });
+        markYes({ cell: { row: emptyCellIndices[0], col } as CellType });
       }
     },
     [puzzleContent, markYes]
   );
 
   const detectSingleColorRow = useCallback(
-    ({ row }: { row: number }) => {
-      const emptyCellIndices = puzzleContent[row]
+    ({ row }: { row: number }): void => {
+      const emptyCellIndices: number[] = puzzleContent[row]
         .map((cell, index) => (cell === null ? index : -1))
         .filter((index) => index !== -1);
 
       if (emptyCellIndices.length === 0) return;
 
-      const uniqueColors = new Set(
+      const uniqueColors: Set<ColorType> = new Set(
         emptyCellIndices
           .map((index) => puzzleColors[row][index])
           .filter((cell) => cell !== null)
       );
       if (uniqueColors.size === 1) {
-        const color = uniqueColors.values().next().value;
+        const color: ColorType = uniqueColors.values().next().value;
         if (color) {
           // markNoForColorExceptRow
           for (let i = 0; i < size; i++) {
             if (i !== row) {
               for (let j = 0; j < size; j++) {
                 if (puzzleColors[i][j] === color) {
-                  markNo({ row: i, col: j });
+                  markNo({ cell: { row: i, col: j } as CellType });
                 }
               }
             }
@@ -201,27 +203,27 @@ export default function SolvedLayout({
   );
 
   const detectSingleColorCol = useCallback(
-    ({ col }: { col: number }) => {
-      const emptyCellIndices = puzzleColors[col]
+    ({ col }: { col: number }): void => {
+      const emptyCellIndices: number[] = puzzleColors[col]
         .map((cell, index) => (cell === null ? index : -1))
         .filter((index) => index !== -1);
 
       if (emptyCellIndices.length === 0) return;
 
-      const uniqueColors = new Set(
+      const uniqueColors: Set<ColorType> = new Set(
         emptyCellIndices
           .map((index) => puzzleColors[index][col])
           .filter((cell) => cell !== null)
       );
       if (uniqueColors.size === 1) {
-        const color = uniqueColors.values().next().value;
+        const color: ColorType = uniqueColors.values().next().value;
         if (color) {
           // markNoForColorExceptCol
           for (let i = 0; i < size; i++) {
             if (i !== col) {
               for (let j = 0; j < size; j++) {
                 if (puzzleColors[j][i] === color) {
-                  markNo({ row: j, col: i });
+                  markNo({ cell: { row: j, col: i } as CellType });
                 }
               }
             }
@@ -233,8 +235,8 @@ export default function SolvedLayout({
   );
 
   const detectIfColorInSingleRowOrCol = useCallback(
-    ({ color }: { color: string }) => {
-      const cells = getEmptyCells({ color });
+    ({ color }: { color: ColorType }): void => {
+      const cells: CellType[] = getEmptyCells({ color });
 
       const rowIndices = new Set(cells.map((cell) => cell.row));
       if (rowIndices.size === 1) {
@@ -242,7 +244,7 @@ export default function SolvedLayout({
         if (typeof row === "number") {
           for (let i = 0; i < size; i++) {
             if (puzzleColors[row][i] !== color) {
-              markNo({ row, col: i });
+              markNo({ cell: { row, col: i } as CellType });
             }
           }
         }
@@ -254,7 +256,7 @@ export default function SolvedLayout({
         if (typeof col === "number") {
           for (let i = 0; i < size; i++) {
             if (puzzleColors[i][col] !== color) {
-              markNo({ row: i, col });
+              markNo({ cell: { row: i, col } as CellType });
             }
           }
         }
@@ -264,54 +266,45 @@ export default function SolvedLayout({
   );
 
   const detectTwoAdjacentEmptyCellsInRow = useCallback(
-    ({
-      row,
-      cells,
-    }: {
-      row: number;
-      cells: { row: number; col: number }[];
-    }) => {
-      const colIndices = cells.map((cell) => cell.col);
-      const uniqueColIndices = Array.from(new Set(colIndices));
+    ({ row, cells }: { row: number; cells: CellType[] }): void => {
+      const colIndices: number[] = cells.map((cell) => cell.col);
+      const uniqueColIndices: number[] = Array.from(new Set(colIndices));
       if (uniqueColIndices.length !== 2) return;
 
-      const [firstCol, secondCol] = uniqueColIndices;
+      const [firstCol, secondCol] = uniqueColIndices as [number, number];
       if (Math.abs(firstCol - secondCol) !== 1) return;
 
-      markNo({ row: row - 1, col: firstCol });
-      markNo({ row: row + 1, col: firstCol });
-      markNo({ row: row - 1, col: secondCol });
-      markNo({ row: row + 1, col: secondCol });
+      markNo({ cell: { row: row - 1, col: firstCol } as CellType });
+      markNo({ cell: { row: row + 1, col: firstCol } as CellType });
+      markNo({ cell: { row: row - 1, col: secondCol } as CellType });
+      markNo({ cell: { row: row + 1, col: secondCol } as CellType });
     },
     [markNo]
   );
 
   const detectTwoAdjacentEmptyCellsInCol = useCallback(
-    ({
-      col,
-      cells,
-    }: {
-      col: number;
-      cells: { row: number; col: number }[];
-    }) => {
-      const rowIndices = cells.map((cell) => cell.row);
-      const uniqueRowIndices = Array.from(new Set(rowIndices));
+    ({ col, cells }: { col: number; cells: CellType[] }): void => {
+      const rowIndices: number[] = cells.map((cell) => cell.row);
+      const uniqueRowIndices: number[] = Array.from(new Set(rowIndices));
       if (uniqueRowIndices.length !== 2) return;
 
-      const [firstRow, secondRow] = uniqueRowIndices;
+      const [firstRow, secondRow]: [number, number] = uniqueRowIndices as [
+        number,
+        number
+      ];
       if (Math.abs(firstRow - secondRow) !== 1) return;
 
-      markNo({ row: firstRow, col: col - 1 });
-      markNo({ row: firstRow, col: col + 1 });
-      markNo({ row: secondRow, col: col - 1 });
-      markNo({ row: secondRow, col: col + 1 });
+      markNo({ cell: { row: firstRow, col: col - 1 } as CellType });
+      markNo({ cell: { row: firstRow, col: col + 1 } as CellType });
+      markNo({ cell: { row: secondRow, col: col - 1 } as CellType });
+      markNo({ cell: { row: secondRow, col: col + 1 } as CellType });
     },
     [markNo]
   );
 
   const detectTwoAdjacentEmptyCells = useCallback(
-    ({ color }: { color: string }) => {
-      const emptyCells = getEmptyCells({ color });
+    ({ color }: { color: ColorType }): void => {
+      const emptyCells: CellType[] = getEmptyCells({ color });
       if (emptyCells.length !== 2) return;
 
       detectTwoAdjacentEmptyCellsInCol({
@@ -331,52 +324,42 @@ export default function SolvedLayout({
   );
 
   const detectThreeAdjacentEmptyCellsInRow = useCallback(
-    ({
-      row,
-      cells,
-    }: {
-      row: number;
-      cells: { row: number; col: number }[];
-    }) => {
-      const colIndices = cells.map((cell) => cell.col);
-      let uniqueColIndices = Array.from(new Set(colIndices));
+    ({ row, cells }: { row: number; cells: CellType[] }): void => {
+      const colIndices: number[] = cells.map((cell) => cell.col);
+      let uniqueColIndices: number[] = Array.from(new Set(colIndices));
       if (uniqueColIndices.length !== 3) return;
 
       uniqueColIndices.sort((a, b) => a - b);
-      const [firstCol, secondCol, thirdCol] = uniqueColIndices;
+      const [firstCol, secondCol, thirdCol]: [number, number, number] =
+        uniqueColIndices as [number, number, number];
       if (firstCol - secondCol !== 1 || secondCol - thirdCol !== 1) return;
 
-      markNo({ row: row - 1, col: secondCol });
-      markNo({ row: row + 1, col: secondCol });
+      markNo({ cell: { row: row - 1, col: secondCol } as CellType });
+      markNo({ cell: { row: row + 1, col: secondCol } as CellType });
     },
     [markNo]
   );
 
   const detectThreeAdjacentEmptyCellsInCol = useCallback(
-    ({
-      col,
-      cells,
-    }: {
-      col: number;
-      cells: { row: number; col: number }[];
-    }) => {
-      const rowIndices = cells.map((cell) => cell.row);
-      let uniqueRowIndices = Array.from(new Set(rowIndices));
+    ({ col, cells }: { col: number; cells: CellType[] }): void => {
+      const rowIndices: number[] = cells.map((cell) => cell.row);
+      let uniqueRowIndices: number[] = Array.from(new Set(rowIndices));
       if (uniqueRowIndices.length !== 3) return;
 
       uniqueRowIndices.sort((a, b) => a - b);
-      const [firstRow, secondRow, thirdRow] = uniqueRowIndices;
+      const [firstRow, secondRow, thirdRow]: [number, number, number] =
+        uniqueRowIndices as [number, number, number];
       if (secondRow - firstRow !== 1 || thirdRow - secondRow !== 1) return;
 
-      markNo({ row: secondRow, col: col - 1 });
-      markNo({ row: secondRow, col: col + 1 });
+      markNo({ cell: { row: secondRow, col: col - 1 } as CellType });
+      markNo({ cell: { row: secondRow, col: col + 1 } as CellType });
     },
     [markNo]
   );
 
   const detectThreeAdjacentEmptyCells = useCallback(
-    ({ color }: { color: string }) => {
-      const emptyCells = getEmptyCells({ color });
+    ({ color }: { color: string }): void => {
+      const emptyCells: CellType[] = getEmptyCells({ color });
       if (emptyCells.length !== 3) return;
 
       detectThreeAdjacentEmptyCellsInCol({
@@ -395,7 +378,7 @@ export default function SolvedLayout({
     ]
   );
 
-  const isSolved = () => {
+  const isSolved = (): boolean => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         if (puzzleContent[i][j] === null) return false;
@@ -404,32 +387,34 @@ export default function SolvedLayout({
 
     // check every row only one YES
     for (let i = 0; i < size; i++) {
-      const yesCount = puzzleContent[i].filter((cell) => cell === YES).length;
+      const yesCount: number = puzzleContent[i].filter(
+        (cell) => cell === YES
+      ).length;
       if (yesCount !== 1) return false;
     }
 
     // check every col has only one YES
     for (let j = 0; j < size; j++) {
-      const yesCount = puzzleContent
+      const yesCount: number = puzzleContent
         .map((row) => row[j])
         .filter((cell) => cell === YES).length;
       if (yesCount !== 1) return false;
     }
 
-    const yesCells = puzzleContent
+    const yesCells: CellType[] = puzzleContent
       .flatMap((row, rowIndex) =>
         row.map((cell, colIndex) =>
-          cell === YES ? { row: rowIndex, col: colIndex } : null
+          cell === YES ? { row: rowIndex, col: colIndex } : undefined
         )
       )
-      .filter((cell) => cell !== null);
+      .filter((cell): cell is CellType => cell !== undefined);
     if (yesCells.length !== size) return false;
 
     for (let n = 0; n < yesCells.length - 1; n++) {
-      const currentCell = yesCells[n];
+      const currentCell: CellType = yesCells[n];
       if (currentCell === null) return false;
 
-      const nextCell = yesCells[n + 1];
+      const nextCell: CellType | null = yesCells[n + 1];
       if (nextCell === null) return false;
 
       if (Math.abs(currentCell.col - nextCell.col) <= 1) {

@@ -1,4 +1,4 @@
-import { PuzzleType } from "./types";
+import { ColorType, CellContentType } from "./types";
 import { YES, getColorCode } from "./constant";
 
 export default function Puzzle({
@@ -8,14 +8,14 @@ export default function Puzzle({
   colors,
 }: {
   size: number;
-  content?: PuzzleType;
+  content?: CellContentType[][];
   isSolved?: boolean;
-  colors?: PuzzleType;
+  colors?: ColorType[][];
 }) {
   const rows = Array.from({ length: size }, (_, rowIndex) => (
     <div key={rowIndex} className="flex flex-row">
       {Array.from({ length: size }, (_, colIndex) => {
-        const cellContent = content?.[rowIndex]?.[colIndex];
+        const cellContent: ColorType = content?.[rowIndex]?.[colIndex] ?? null;
         return (
           <div
             key={colIndex}
