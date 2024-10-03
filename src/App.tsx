@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PuzzleType } from "./types";
 import INITIAL_PUZZLE_OPTIONS from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
 import LayoutTemplateButtons from "./LayoutTemplateButtons";
@@ -8,8 +9,8 @@ import Footer from "./Footer";
 import Disclaimer from "./Disclaimer";
 
 export default function App() {
-  const [puzzleColors, setPuzzleColors] = useState<(string | null)[][]>(
-    INITIAL_PUZZLE_OPTIONS[0]
+  const [puzzleColors, setPuzzleColors] = useState<PuzzleType>(
+    INITIAL_PUZZLE_OPTIONS[2]
   );
 
   const size = puzzleColors.length;

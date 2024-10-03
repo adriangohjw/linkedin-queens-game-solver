@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
+import { PuzzleType } from "./types";
 
 export default function LayoutTemplateButtons({
   options,
   setPuzzleColors,
 }: {
   options: string[][][];
-  setPuzzleColors: Dispatch<SetStateAction<(string | null)[][]>>;
+  setPuzzleColors: Dispatch<SetStateAction<PuzzleType>>;
 }) {
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-center">

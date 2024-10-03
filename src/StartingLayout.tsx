@@ -1,3 +1,4 @@
+import { PuzzleType } from "./types";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -6,7 +7,7 @@ export default function StartingLayout({
   puzzleColors,
 }: {
   size: number;
-  puzzleColors: (string | null)[][];
+  puzzleColors: PuzzleType;
 }) {
   return (
     <Layout title="Starting Layout">

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { PuzzleType } from "./types";
 import { YES, NO, COLOR_OPTIONS } from "./constant";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
@@ -8,9 +9,9 @@ export default function SolvedLayout({
   puzzleColors,
 }: {
   size: number;
-  puzzleColors: (string | null)[][];
+  puzzleColors: PuzzleType;
 }) {
-  const [puzzleContent, setPuzzleContent] = useState<(string | null)[][]>(() =>
+  const [puzzleContent, setPuzzleContent] = useState<PuzzleType>(() =>
     Array.from({ length: size }, () => Array.from({ length: size }, () => null))
   );
 

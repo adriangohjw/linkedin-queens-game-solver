@@ -1,3 +1,4 @@
+import { PuzzleType } from "./types";
 import { YES, getColorCode } from "./constant";
 
 export default function Puzzle({
@@ -7,9 +8,9 @@ export default function Puzzle({
   colors,
 }: {
   size: number;
-  content?: (string | null)[][];
+  content?: PuzzleType;
   isSolved?: boolean;
-  colors?: (string | null)[][];
+  colors?: PuzzleType;
 }) {
   const rows = Array.from({ length: size }, (_, rowIndex) => (
     <div key={rowIndex} className="flex flex-row">
