@@ -10,7 +10,7 @@ export default function SolvedLayout({
   size: number;
   puzzleColors: (string | null)[][];
 }) {
-  const [puzzleContent, setPuzzleContent] = useState<(string | null)[][]>(
+  const [puzzleContent, setPuzzleContent] = useState<(string | null)[][]>(() =>
     Array.from({ length: size }, () => Array.from({ length: size }, () => null))
   );
 
@@ -39,12 +39,15 @@ export default function SolvedLayout({
 
   const markNo = useCallback(
     ({ row, col }: { row: number; col: number }) => {
+      if (row < 0 || row >= size || col < 0 || col >= size) {
+        return;
+      }
       if (puzzleContent[row][col] === NO) {
         return;
       }
       markGrid({ row, col, content: NO });
     },
-    [puzzleContent, markGrid]
+    [size, puzzleContent, markGrid]
   );
 
   const markSurroundingNo = useCallback(
