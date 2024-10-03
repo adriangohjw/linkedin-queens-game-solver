@@ -33,7 +33,7 @@ export default function Puzzle({
             style={{
               backgroundColor: getColorCode(colors?.[rowIndex]?.[colIndex]),
             }}
-            onClick={() => triggerSetPuzzleColor()}
+            onMouseDown={() => triggerSetPuzzleColor()}
             onMouseEnter={(e) => {
               // Check if the left mouse button is pressed
               e.buttons === 1 && triggerSetPuzzleColor();
