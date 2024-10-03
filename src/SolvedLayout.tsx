@@ -457,11 +457,19 @@ export default function SolvedLayout({
     size,
   ]);
 
+  const correctPuzzleColorsCount: boolean =
+    size ===
+    Object.keys(colors).filter((color) => colors[color].length > 0).length;
+
   return (
     <Layout title="Solved Layout">
       <Puzzle
         size={size}
-        content={isAllPuzzleColorsFilled ? puzzleContent : undefined}
+        content={
+          isAllPuzzleColorsFilled && correctPuzzleColorsCount
+            ? puzzleContent
+            : undefined
+        }
         isSolved={isSolved()}
         colors={puzzleColors}
       />
@@ -470,7 +478,13 @@ export default function SolvedLayout({
       )}
       {!isAllPuzzleColorsFilled && (
         <p className="text-xl text-red-500 font-bold">
-          Please fill up the starting layout
+          Please fill up starting layout
+        </p>
+      )}
+      {isAllPuzzleColorsFilled && !correctPuzzleColorsCount && (
+        <p className="text-xl text-red-500 font-bold">
+          Incorrect number of colors <br />
+          (should have {size})
         </p>
       )}
     </Layout>
