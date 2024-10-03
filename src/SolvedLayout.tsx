@@ -478,7 +478,7 @@ export default function SolvedLayout({
         colors={puzzleColors}
       />
       {isSolved() && (
-        <p className="text-4xl text-green-500 font-bold">Solved</p>
+        <p className="text-4xl text-green-500 font-bold">Solved 🥳</p>
       )}
       {!isAllPuzzleColorsFilled && (
         <p className="text-lg text-red-500 font-bold">
