@@ -385,6 +385,27 @@ export default function SolvedLayout({
       if (yesCount !== 1) return false;
     }
 
+    const yesCells = puzzleContent
+      .flatMap((row, rowIndex) =>
+        row.map((cell, colIndex) =>
+          cell === YES ? { row: rowIndex, col: colIndex } : null
+        )
+      )
+      .filter((cell) => cell !== null);
+    if (yesCells.length !== size) return false;
+
+    for (let n = 0; n < yesCells.length - 1; n++) {
+      const currentCell = yesCells[n];
+      if (currentCell === null) return false;
+
+      const nextCell = yesCells[n + 1];
+      if (nextCell === null) return false;
+
+      if (Math.abs(currentCell.col - nextCell.col) <= 1) {
+        return false;
+      }
+    }
+
     return true;
   };
 
