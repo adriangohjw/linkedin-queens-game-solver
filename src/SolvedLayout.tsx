@@ -28,12 +28,18 @@ export default function SolvedLayout({
     }
   }
 
+  const isAllPuzzleColorsFilled = puzzleColors.every((row): boolean =>
+    row.every((color) => color !== null)
+  );
+
   const getEmptyCells = useCallback(
     ({ color }: { color: ColorType }): CellType[] => {
+      if (!isAllPuzzleColorsFilled) return [];
+
       const cells: CellType[] = colors[color as string];
       return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
     },
-    [colors, puzzleContent]
+    [colors, puzzleContent, isAllPuzzleColorsFilled]
   );
 
   const markGrid = useCallback(
@@ -455,11 +461,18 @@ export default function SolvedLayout({
     <Layout title="Solved Layout">
       <Puzzle
         size={size}
-        content={puzzleContent}
+        content={isAllPuzzleColorsFilled ? puzzleContent : undefined}
         isSolved={isSolved()}
         colors={puzzleColors}
       />
-      {isSolved() && <p className="text-4xl text-green-500 font-bold">Solved</p>}
+      {isSolved() && (
+        <p className="text-4xl text-green-500 font-bold">Solved</p>
+      )}
+      {!isAllPuzzleColorsFilled && (
+        <p className="text-xl text-red-500 font-bold">
+          Please fill up the starting layout
+        </p>
+      )}
     </Layout>
   );
 }
