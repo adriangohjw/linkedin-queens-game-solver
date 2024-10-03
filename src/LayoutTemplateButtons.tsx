@@ -13,19 +13,43 @@ export default function LayoutTemplateButtons({
       <p>Select Preset Layout:</p>
       <div className="flex gap-2">
         {INITIAL_PUZZLE_OPTIONS.map((_, index) => (
-          <button
+          <TemplateButton
             key={index}
-            className={`py-1 px-4 rounded-lg ${
-              layoutSelected === index
-                ? "bg-black text-white cursor-default"
-                : "bg-white text-black cursor-pointer border border-gray-500 hover:opacity-75 hover:shadow-md"
-            }`}
+            selected={layoutSelected === index}
             onClick={() => setLayoutSelected(index)}
-          >
-            {index + 1}
-          </button>
+            text={`${index + 1}`}
+          />
         ))}
+        <TemplateButton
+          key="clear"
+          selected={false}
+          onClick={() => console.log(123)}
+          text={"Clear"}
+        />
       </div>
     </div>
+  );
+}
+
+function TemplateButton({
+  selected,
+  onClick,
+  text,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  text: string;
+}): JSX.Element {
+  return (
+    <button
+      className={`py-1 px-3 rounded-lg ${
+        selected
+          ? "bg-black text-white cursor-default"
+          : "bg-white text-black cursor-pointer border border-gray-500 hover:opacity-75 hover:shadow-md"
+      }`}
+      onClick={onClick}
+    >
+      {text}
+    </button>
   );
 }
