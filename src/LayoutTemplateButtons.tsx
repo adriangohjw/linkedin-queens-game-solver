@@ -14,7 +14,7 @@ export default function LayoutTemplateButtons({
         {options.map((option, index) => (
           <button
             key={index}
-            className="py-1 px-4 bg-black text-white rounded-lg hover:bg-gray-800 hover:shadow-md"
+            className="py-1 px-4 bg-black text-white rounded-lg hover:opacity-75 hover:shadow-md"
             onClick={() => setPuzzleColors(option)}
           >
             {index + 1}

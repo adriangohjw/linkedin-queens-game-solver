@@ -33,7 +33,7 @@ export default function RulesButton() {
   return (
     <>
       <button
-        className="mt-4 py-1 px-4 bg-black text-white rounded-lg hover:bg-gray-800 hover:shadow-md"
+        className="mt-4 py-1 px-4 bg-black text-white rounded-lg hover:opacity-75 hover:shadow-md"
         onClick={() => setShowModal(true)}
       >
         Show Game Rules
@@ -56,7 +56,7 @@ export default function RulesButton() {
               </p>
             </div>
             <button
-              className="mt-2 py-1 px-4 bg-black text-white rounded-lg w-fit hover:bg-gray-800 hover:shadow-md mx-auto"
+              className="mt-2 py-1 px-4 bg-black text-white rounded-lg w-fit hover:opacity-75 hover:shadow-md mx-auto"
               onClick={() => setShowModal(false)}
             >
               Close
