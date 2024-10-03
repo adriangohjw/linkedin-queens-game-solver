@@ -12,27 +12,23 @@ import SolvedLayout from "./SolvedLayout";
 import Footer from "./Footer";
 import Disclaimer from "./Disclaimer";
 
+const initializePuzzleColors = (layout: number | null): ColorType[][] => {
+  return layout === null
+    ? generateInitialBlankPuzzle({ size: 8 })
+    : INITIAL_PUZZLE_OPTIONS[layout].map((row) => [...row]);
+};
+
 export default function App() {
   const [layoutSelected, setLayoutSelected] = useState<number | null>(2);
   const [puzzleColors, setPuzzleColors] = useState<ColorType[][]>(
-    layoutSelected === null
-      ? generateInitialBlankPuzzle({ size: 8 })
-      : // duplicate to prevent overwriting the initial value
-        INITIAL_PUZZLE_OPTIONS[layoutSelected as unknown as number].map(
-          (row) => [...row]
-        )
+    initializePuzzleColors(layoutSelected)
   );
   const [selectedColor, setSelectedColor] = useState<ColorType>(
     COLOR_OPTIONS[0]
   );
 
   useEffect(() => {
-    setPuzzleColors(
-      layoutSelected === null
-        ? generateInitialBlankPuzzle({ size: 8 })
-        : // duplicate to prevent overwriting the initial value
-          INITIAL_PUZZLE_OPTIONS[layoutSelected].map((row) => [...row])
-    );
+    setPuzzleColors(initializePuzzleColors(layoutSelected));
   }, [layoutSelected]);
 
   const size = puzzleColors.length;
