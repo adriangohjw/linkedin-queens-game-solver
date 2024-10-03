@@ -44,7 +44,7 @@ function TemplateButton({
 }): JSX.Element {
   return (
     <button
-      className={`text-sm py-1 px-3 rounded-lg ${
+      className={`text-xs md:text-sm py-1 px-3 rounded-lg ${
         selected
           ? "bg-black text-white cursor-default"
           : "bg-white text-black cursor-pointer border border-gray-500 hover:opacity-75 hover:shadow-md"
