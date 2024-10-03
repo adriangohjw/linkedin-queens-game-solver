@@ -1,29 +1,27 @@
 import { CellContentType, CellType, ColorType } from "../types";
-import { markYesFunction } from "./markUtils";
+import { markYes } from "./markUtils";
 
-const fillSingleEmptyCellInColFunction = ({
+const fillSingleEmptyCellInRow = ({
   puzzleContent,
-  col,
+  row,
   puzzleColors,
   getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
-  col: number;
+  row: number;
   puzzleColors: ColorType[][];
   getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
-  const currentColContent: CellContentType[] = puzzleContent.map(
-    (row) => row[col]
-  );
+  const currentRowContent: CellContentType[] = puzzleContent[row];
 
-  const emptyCellIndices: number[] = currentColContent
+  const emptyCellIndices: number[] = currentRowContent
     .map((cell, index) => (cell === null ? index : -1))
     .filter((index) => index !== -1);
 
   if (emptyCellIndices.length === 1) {
-    return markYesFunction({
+    return markYes({
       puzzleContent,
-      cell: { row: emptyCellIndices[0], col } as CellType,
+      cell: { row, col: emptyCellIndices[0] } as CellType,
       puzzleColors,
       getEmptyCells,
     });
@@ -31,4 +29,4 @@ const fillSingleEmptyCellInColFunction = ({
   return puzzleContent;
 };
 
-export default fillSingleEmptyCellInColFunction;
+export default fillSingleEmptyCellInRow;

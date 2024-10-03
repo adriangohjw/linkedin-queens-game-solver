@@ -9,13 +9,13 @@ import {
   generateUniquePuzzleColorsCount,
   getEmptyCellsUtil,
 } from "./puzzleUtils/util";
-import fillSingleEmptyCellInRowFunction from "./puzzleUtils/fillSingleEmptyCellInRowFunction";
-import fillSingleEmptyCellInColFunction from "./puzzleUtils/fillSingleEmptyCellInColFunction";
-import detectSingleColorRowFunction from "./puzzleUtils/detectSingleColorRowFunction";
-import detectSingleColorColFunction from "./puzzleUtils/detectSingleColorColFunction";
-import detectIfColorInSingleRowOrColFunction from "./puzzleUtils/detectIfColorInSingleRowOrColFunction";
-import detectTwoAdjacentEmptyCellsFunction from "./puzzleUtils/detectTwoAdjacentEmptyCellsFunction";
-import detectThreeAdjacentEmptyCellsFunction from "./puzzleUtils/detectThreeAdjacentEmptyCellsFunction";
+import fillSingleEmptyCellInRow from "./puzzleUtils/fillSingleEmptyCellInRow";
+import fillSingleEmptyCellInCol from "./puzzleUtils/fillSingleEmptyCellInCol";
+import detectSingleColorRow from "./puzzleUtils/detectSingleColorRow";
+import detectSingleColorCol from "./puzzleUtils/detectSingleColorCol";
+import detectIfColorInSingleRowOrCol from "./puzzleUtils/detectIfColorInSingleRowOrCol";
+import detectTwoAdjacentEmptyCells from "./puzzleUtils/detectTwoAdjacentEmptyCells";
+import detectThreeAdjacentEmptyCells from "./puzzleUtils/detectThreeAdjacentEmptyCells";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -64,24 +64,24 @@ export default function SolvedLayout({
   useEffect(() => {
     let newPuzzleContent: CellContentType[][] = puzzleContent;
     for (let i = 0; i < size; i++) {
-      newPuzzleContent = fillSingleEmptyCellInRowFunction({
+      newPuzzleContent = fillSingleEmptyCellInRow({
         puzzleContent: newPuzzleContent,
         row: i,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = fillSingleEmptyCellInColFunction({
+      newPuzzleContent = fillSingleEmptyCellInCol({
         puzzleContent: newPuzzleContent,
         col: i,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = detectSingleColorRowFunction({
+      newPuzzleContent = detectSingleColorRow({
         puzzleContent: newPuzzleContent,
         row: i,
         puzzleColors,
       });
-      newPuzzleContent = detectSingleColorColFunction({
+      newPuzzleContent = detectSingleColorCol({
         puzzleContent: newPuzzleContent,
         col: i,
         puzzleColors,
@@ -89,18 +89,18 @@ export default function SolvedLayout({
     }
 
     Object.keys(colors).forEach((color) => {
-      newPuzzleContent = detectIfColorInSingleRowOrColFunction({
+      newPuzzleContent = detectIfColorInSingleRowOrCol({
         color,
         puzzleContent: newPuzzleContent,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = detectTwoAdjacentEmptyCellsFunction({
+      newPuzzleContent = detectTwoAdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
         getEmptyCells,
       });
-      newPuzzleContent = detectThreeAdjacentEmptyCellsFunction({
+      newPuzzleContent = detectThreeAdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
         getEmptyCells,

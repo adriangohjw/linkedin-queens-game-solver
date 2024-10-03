@@ -1,6 +1,6 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
-import { markNoFunction } from "./markUtils";
+import { markNo } from "./markUtils";
 
 const detectThreeAdjacentEmptyCellsInRow = ({
   puzzleContent,
@@ -24,11 +24,11 @@ const detectThreeAdjacentEmptyCellsInRow = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row - 1, col: secondCol } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row + 1, col: secondCol } as CellType,
   });
@@ -57,18 +57,18 @@ const detectThreeAdjacentEmptyCellsInCol = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: secondRow, col: col - 1 } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: secondRow, col: col + 1 } as CellType,
   });
   return newPuzzleContent;
 };
 
-const detectThreeAdjacentEmptyCellsFunction = ({
+const detectThreeAdjacentEmptyCells = ({
   puzzleContent,
   color,
   getEmptyCells,
@@ -96,4 +96,4 @@ const detectThreeAdjacentEmptyCellsFunction = ({
   return newPuzzleContent;
 };
 
-export default detectThreeAdjacentEmptyCellsFunction;
+export default detectThreeAdjacentEmptyCells;

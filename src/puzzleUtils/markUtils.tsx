@@ -2,7 +2,7 @@ import { CellContentType, CellType, ColorType } from "../types";
 import { NO, YES } from "../constant";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 
-const markGridFunction = ({
+const markGrid = ({
   puzzleContent,
   cell,
   content,
@@ -18,7 +18,7 @@ const markGridFunction = ({
   return newPuzzleContent;
 };
 
-export const markNoFunction = ({
+export const markNo = ({
   puzzleContent,
   cell,
 }: {
@@ -30,10 +30,10 @@ export const markNoFunction = ({
   if (puzzleContent[cell.row][cell.col] === NO) return puzzleContent;
   if (puzzleContent[cell.row][cell.col] === YES) return puzzleContent;
 
-  return markGridFunction({ puzzleContent, cell, content: NO });
+  return markGrid({ puzzleContent, cell, content: NO });
 };
 
-const markSurroundingNoFunction = ({
+const markSurroundingNo = ({
   puzzleContent,
   cell,
 }: {
@@ -52,7 +52,7 @@ const markSurroundingNoFunction = ({
       const newRow: number = cell.row + i;
       const newCol: number = cell.col + j;
       if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
-        newPuzzleContent = markNoFunction({
+        newPuzzleContent = markNo({
           puzzleContent: newPuzzleContent,
           cell: { row: newRow, col: newCol } as CellType,
         });
@@ -62,7 +62,7 @@ const markSurroundingNoFunction = ({
   return newPuzzleContent;
 };
 
-const markRowNoFunction = ({
+const markRowNo = ({
   puzzleContent,
   excludedCell,
 }: {
@@ -78,7 +78,7 @@ const markRowNoFunction = ({
 
   for (let i = 0; i < size; i++) {
     if (i === excludeCol) continue;
-    newPuzzleContent = markNoFunction({
+    newPuzzleContent = markNo({
       puzzleContent: newPuzzleContent,
       cell: { row, col: i } as CellType,
     });
@@ -86,7 +86,7 @@ const markRowNoFunction = ({
   return newPuzzleContent;
 };
 
-const markColNoFunction = ({
+const markColNo = ({
   puzzleContent,
   excludedCell,
 }: {
@@ -102,7 +102,7 @@ const markColNoFunction = ({
 
   for (let i = 0; i < size; i++) {
     if (i === excludeRow) continue;
-    newPuzzleContent = markNoFunction({
+    newPuzzleContent = markNo({
       puzzleContent: newPuzzleContent,
       cell: { row: i, col } as CellType,
     });
@@ -110,7 +110,7 @@ const markColNoFunction = ({
   return newPuzzleContent;
 };
 
-const markAllOtherSameColorCellsNoFunction = ({
+const markAllOtherSameColorCellsNo = ({
   puzzleContent,
   color,
   excludedCell,
@@ -129,7 +129,7 @@ const markAllOtherSameColorCellsNoFunction = ({
   );
   remainingEmptyCells.forEach(
     (cell) =>
-      (newPuzzleContent = markNoFunction({
+      (newPuzzleContent = markNo({
         puzzleContent: newPuzzleContent,
         cell,
       }))
@@ -137,7 +137,7 @@ const markAllOtherSameColorCellsNoFunction = ({
   return newPuzzleContent;
 };
 
-export const markYesFunction = ({
+export const markYes = ({
   puzzleContent,
   cell,
   puzzleColors,
@@ -153,26 +153,26 @@ export const markYesFunction = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  newPuzzleContent = markGridFunction({
+  newPuzzleContent = markGrid({
     puzzleContent,
     cell,
     content: YES,
   });
-  newPuzzleContent = markAllOtherSameColorCellsNoFunction({
+  newPuzzleContent = markAllOtherSameColorCellsNo({
     puzzleContent: newPuzzleContent,
     color: puzzleColors[cell.row][cell.col] as string,
     excludedCell: cell,
     getEmptyCells,
   });
-  newPuzzleContent = markSurroundingNoFunction({
+  newPuzzleContent = markSurroundingNo({
     puzzleContent: newPuzzleContent,
     cell,
   });
-  newPuzzleContent = markRowNoFunction({
+  newPuzzleContent = markRowNo({
     puzzleContent: newPuzzleContent,
     excludedCell: cell,
   });
-  newPuzzleContent = markColNoFunction({
+  newPuzzleContent = markColNo({
     puzzleContent: newPuzzleContent,
     excludedCell: cell,
   });

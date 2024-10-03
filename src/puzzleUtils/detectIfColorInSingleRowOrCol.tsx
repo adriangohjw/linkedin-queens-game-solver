@@ -1,8 +1,8 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
-import { markNoFunction } from "./markUtils";
+import { markNo } from "./markUtils";
 
-const detectIfColorInSingleRowOrColFunction = ({
+const detectIfColorInSingleRowOrCol = ({
   color,
   puzzleContent,
   puzzleColors,
@@ -27,7 +27,7 @@ const detectIfColorInSingleRowOrColFunction = ({
     if (typeof row === "number") {
       for (let i = 0; i < size; i++) {
         if (puzzleColors[row][i] !== color) {
-          newPuzzleContent = markNoFunction({
+          newPuzzleContent = markNo({
             puzzleContent: newPuzzleContent,
             cell: { row, col: i } as CellType,
           });
@@ -42,7 +42,7 @@ const detectIfColorInSingleRowOrColFunction = ({
     if (typeof col === "number") {
       for (let i = 0; i < size; i++) {
         if (puzzleColors[i][col] !== color) {
-          newPuzzleContent = markNoFunction({
+          newPuzzleContent = markNo({
             puzzleContent: newPuzzleContent,
             cell: { row: i, col } as CellType,
           });
@@ -54,4 +54,4 @@ const detectIfColorInSingleRowOrColFunction = ({
   return newPuzzleContent;
 };
 
-export default detectIfColorInSingleRowOrColFunction;
+export default detectIfColorInSingleRowOrCol;

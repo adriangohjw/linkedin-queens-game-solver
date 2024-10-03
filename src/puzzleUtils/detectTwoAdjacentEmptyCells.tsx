@@ -1,6 +1,6 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
-import { markNoFunction } from "./markUtils";
+import { markNo } from "./markUtils";
 
 const detectTwoAdjacentEmptyCellsInCol = ({
   puzzleContent,
@@ -24,19 +24,19 @@ const detectTwoAdjacentEmptyCellsInCol = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: firstRow, col: col - 1 } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: firstRow, col: col + 1 } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: secondRow, col: col - 1 } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: secondRow, col: col + 1 } as CellType,
   });
@@ -62,26 +62,26 @@ const detectTwoAdjacentEmptyCellsInRow = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row - 1, col: firstCol } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row + 1, col: firstCol } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row - 1, col: secondCol } as CellType,
   });
-  newPuzzleContent = markNoFunction({
+  newPuzzleContent = markNo({
     puzzleContent: newPuzzleContent,
     cell: { row: row + 1, col: secondCol } as CellType,
   });
   return newPuzzleContent;
 };
 
-const detectTwoAdjacentEmptyCellsFunction = ({
+const detectTwoAdjacentEmptyCells = ({
   puzzleContent,
   color,
   getEmptyCells,
@@ -109,4 +109,4 @@ const detectTwoAdjacentEmptyCellsFunction = ({
   return newPuzzleContent;
 };
 
-export default detectTwoAdjacentEmptyCellsFunction;
+export default detectTwoAdjacentEmptyCells;
