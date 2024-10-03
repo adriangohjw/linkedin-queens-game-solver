@@ -201,7 +201,7 @@ export default function SolvedLayout({
     [puzzleColors, size, markNo]
   );
 
-  const detectColorInSingleRowOrCol = useCallback(
+  const detectIfColorInSingleRowOrCol = useCallback(
     ({ color }: { color: string }) => {
       const cells = getEmptyCells({ color });
 
@@ -418,13 +418,13 @@ export default function SolvedLayout({
     }
 
     Object.keys(colors).forEach((color) => {
-      detectColorInSingleRowOrCol({ color });
+      detectIfColorInSingleRowOrCol({ color });
       detectTwoAdjacentEmptyCells({ color });
       detectThreeAdjacentEmptyCells({ color });
     });
   }, [
     colors,
-    detectColorInSingleRowOrCol,
+    detectIfColorInSingleRowOrCol,
     detectSingleColorCol,
     detectSingleColorRow,
     detectThreeAdjacentEmptyCells,
