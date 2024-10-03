@@ -50,9 +50,9 @@ export default function SolvedLayout({
       if (row < 0 || row >= size || col < 0 || col >= size) {
         return;
       }
-      if (puzzleContent[row][col] === NO) {
-        return;
-      }
+      if (puzzleContent[row][col] === NO) return;
+      if (puzzleContent[row][col] === YES) return;
+
       markGrid({ row, col, content: NO });
     },
     [size, puzzleContent, markGrid]
