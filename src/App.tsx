@@ -51,11 +51,11 @@ export default function App() {
   };
 
   return (
-    <div className="text-center m-4 p-4">
+    <div className="text-center my-8 mx-4 md:mx-8">
       <h1 className="text-3xl md:text-3xl text-2xl font-bold">
         LinkedIn Queens Game Solver
       </h1>
-      <div className="flex flex-row md:flew-col gap-2 justify-center">
+      <div className="flex flex-row md:flew-col gap-2 justify-center mt-4">
         <RulesButton />
         <PlayLinkedinQueensButton />
       </div>

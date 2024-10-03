@@ -481,7 +481,7 @@ export default function SolvedLayout({
         <p className="text-4xl text-green-500 font-bold">Solved</p>
       )}
       {!isAllPuzzleColorsFilled && (
-        <p className="text-xl text-red-500 font-bold">
+        <p className="text-lg text-red-500 font-bold">
           Please fill up starting layout
           <br />
           <i>
@@ -490,7 +490,7 @@ export default function SolvedLayout({
         </p>
       )}
       {isAllPuzzleColorsFilled && !correctPuzzleColorsCount && (
-        <p className="text-xl text-red-500 font-bold">
+        <p className="text-lg text-red-500 font-bold">
           Incorrect number of colors
           <br />
           <i>

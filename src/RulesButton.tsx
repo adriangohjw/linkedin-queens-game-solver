@@ -33,7 +33,7 @@ export default function RulesButton() {
   return (
     <>
       <button
-        className="mt-4 py-1 px-4 bg-black text-white rounded-lg hover:opacity-75 hover:shadow-md"
+        className="py-1 px-4 bg-black text-sm text-white rounded-lg hover:opacity-75 hover:shadow-md"
         onClick={() => setShowModal(true)}
       >
         Show Game Rules

@@ -11,7 +11,7 @@ export default function LayoutTemplateButtons({
   clearBoard: ({ size }: { size?: number }) => void;
 }) {
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-center">
+    <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-center text-sm">
       <p>Select Preset Layout:</p>
       <div className="flex gap-2">
         {INITIAL_PUZZLE_OPTIONS.map((_, index) => (
@@ -44,7 +44,7 @@ function TemplateButton({
 }): JSX.Element {
   return (
     <button
-      className={`py-1 px-3 rounded-lg ${
+      className={`text-sm py-1 px-3 rounded-lg ${
         selected
           ? "bg-black text-white cursor-default"
           : "bg-white text-black cursor-pointer border border-gray-500 hover:opacity-75 hover:shadow-md"

@@ -6,7 +6,7 @@ export default function SizeSlider({
   clearBoard: ({ size }: { size?: number }) => void;
 }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 text-sm">
       <label htmlFor="size-slider" className="whitespace-nowrap">
         Select Size: {size}
       </label>

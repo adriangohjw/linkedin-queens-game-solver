@@ -14,7 +14,7 @@ export default function Footer() {
             </li>
           </ul>
 
-          <ul className="mt-6 flex justify-center gap-6">
+          <ul className="mt-4 md:mt-6 flex justify-center gap-6">
             <li>
               <a
                 href="https://adriangohjw.com"
