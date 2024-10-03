@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { ColorType, CellType } from "./types";
 import { COLOR_OPTIONS } from "./constant";
-import { INITIAL_PUZZLE_OPTIONS } from "./InitialPuzzleOptions";
+import {
+  INITIAL_PUZZLE_OPTIONS,
+  generateInitialBlankPuzzle,
+} from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
 import LayoutTemplateButtons from "./LayoutTemplateButtons";
 import StartingLayout from "./StartingLayout";
@@ -12,21 +15,23 @@ import Disclaimer from "./Disclaimer";
 export default function App() {
   const [layoutSelected, setLayoutSelected] = useState<number | null>(2);
   const [puzzleColors, setPuzzleColors] = useState<ColorType[][]>(
-    // duplicate to prevent overwriting the initial value
-    INITIAL_PUZZLE_OPTIONS[layoutSelected as unknown as number].map((row) => [
-      ...row,
-    ])
+    layoutSelected === null
+      ? generateInitialBlankPuzzle({ size: 8 })
+      : // duplicate to prevent overwriting the initial value
+        INITIAL_PUZZLE_OPTIONS[layoutSelected as unknown as number].map(
+          (row) => [...row]
+        )
   );
   const [selectedColor, setSelectedColor] = useState<ColorType>(
     COLOR_OPTIONS[0]
   );
 
   useEffect(() => {
-    if (layoutSelected === null) return;
-
     setPuzzleColors(
-      // duplicate to prevent overwriting the initial value
-      INITIAL_PUZZLE_OPTIONS[layoutSelected].map((row) => [...row])
+      layoutSelected === null
+        ? generateInitialBlankPuzzle({ size: 8 })
+        : // duplicate to prevent overwriting the initial value
+          INITIAL_PUZZLE_OPTIONS[layoutSelected].map((row) => [...row])
     );
   }, [layoutSelected]);
 

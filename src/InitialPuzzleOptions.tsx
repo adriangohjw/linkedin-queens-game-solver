@@ -79,3 +79,11 @@ export const INITIAL_PUZZLE_OPTIONS: ColorType[][][] = [
   INITIAL_PUZZLE_COLOR_4,
   INITIAL_PUZZLE_COLOR_5,
 ];
+
+export function generateInitialBlankPuzzle({
+  size,
+}: {
+  size: number;
+}): ColorType[][] {
+  return Array.from({ length: size }, () => Array(size).fill(null));
+}
