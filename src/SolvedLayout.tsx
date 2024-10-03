@@ -94,17 +94,47 @@ export default function SolvedLayout({
     [markNo, size]
   );
 
+  const markAllOtherSameColorCellsNo = useCallback(
+    ({
+      color,
+      excludedCell,
+    }: {
+      color: string;
+      excludedCell: { row: number; col: number };
+    }) => {
+      const remainingEmptyCells = getEmptyCells({ color }).filter(
+        (cell) => cell.row !== excludedCell.row || cell.col !== excludedCell.col
+      );
+      remainingEmptyCells.forEach((cell) => {
+        markNo({ row: cell.row, col: cell.col });
+      });
+    },
+    [getEmptyCells, markNo]
+  );
+
   const markYes = useCallback(
     ({ row, col }: { row: number; col: number }) => {
       if (puzzleContent[row][col] === YES) {
         return;
       }
       markGrid({ row, col, content: YES });
+      markAllOtherSameColorCellsNo({
+        color: puzzleColors[row][col] as string,
+        excludedCell: { row, col },
+      });
       markSurroundingNo({ row, col });
       markRowNo({ row, excludeCol: col });
       markColNo({ col, excludeRow: row });
     },
-    [puzzleContent, markGrid, markSurroundingNo, markRowNo, markColNo]
+    [
+      puzzleContent,
+      markGrid,
+      markAllOtherSameColorCellsNo,
+      puzzleColors,
+      markSurroundingNo,
+      markRowNo,
+      markColNo,
+    ]
   );
 
   const fillSingleEmptyCellInRow = useCallback(
