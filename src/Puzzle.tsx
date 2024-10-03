@@ -1,4 +1,4 @@
-import { ColorType, CellContentType } from "./types";
+import { ColorType, CellType, CellContentType } from "./types";
 import { YES, getColorCode } from "./constant";
 
 export default function Puzzle({
@@ -6,11 +6,13 @@ export default function Puzzle({
   content,
   isSolved,
   colors,
+  setPuzzleColor,
 }: {
   size: number;
   content?: CellContentType[][];
   isSolved?: boolean;
   colors?: ColorType[][];
+  setPuzzleColor?: ({ cell }: { cell: CellType }) => void;
 }) {
   const rows = Array.from({ length: size }, (_, rowIndex) => (
     <div key={rowIndex} className="flex flex-row">
@@ -19,9 +21,17 @@ export default function Puzzle({
         return (
           <div
             key={colIndex}
-            className={`border border-black w-10 h-10 flex items-center justify-center`}
+            className={`border border-black w-10 h-10 flex items-center justify-center ${
+              setPuzzleColor ? "hover:opacity-75 cursor-pointer" : ""
+            }`}
             style={{
               backgroundColor: getColorCode(colors?.[rowIndex]?.[colIndex]),
+            }}
+            onClick={() => {
+              setPuzzleColor &&
+                setPuzzleColor({
+                  cell: { row: rowIndex, col: colIndex } as CellType,
+                });
             }}
           >
             <div className={cellContent === YES ? "text-xl" : "text-3xl"}>

@@ -1,12 +1,13 @@
-import { useState } from "react";
 import { ColorType } from "./types";
 import { COLOR_OPTIONS, getColorCode } from "./constant";
 
-export default function ColorPicker() {
-  const [selectedColor, setSelectedColor] = useState<ColorType>(
-    COLOR_OPTIONS[0]
-  );
-
+export default function ColorPicker({
+  selectedColor,
+  setSelectedColor,
+}: {
+  selectedColor: ColorType;
+  setSelectedColor: (color: ColorType) => void;
+}) {
   return (
     <div className="grid grid-cols-5 gap-2">
       {COLOR_OPTIONS.map((color) => (
