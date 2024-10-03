@@ -48,6 +48,11 @@ export default function App() {
     [selectedColor]
   );
 
+  const clearBoard = (): void => {
+    setLayoutSelected(null);
+    setPuzzleColors(generateInitialBlankPuzzle({ size: 8 }));
+  };
+
   return (
     <div className="text-center m-4 p-4">
       <h1 className="text-3xl md:text-3xl text-2xl font-bold">
@@ -62,6 +67,7 @@ export default function App() {
           <LayoutTemplateButtons
             layoutSelected={layoutSelected}
             setLayoutSelected={setLayoutSelected}
+            clearBoard={clearBoard}
           />
         </div>
         <div className="justify-center items-center mt-2 h-full">

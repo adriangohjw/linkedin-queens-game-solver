@@ -4,9 +4,11 @@ import { INITIAL_PUZZLE_OPTIONS } from "./InitialPuzzleOptions";
 export default function LayoutTemplateButtons({
   layoutSelected,
   setLayoutSelected,
+  clearBoard,
 }: {
   layoutSelected: number | null;
   setLayoutSelected: Dispatch<SetStateAction<number | null>>;
+  clearBoard: () => void;
 }) {
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-center">
@@ -23,7 +25,7 @@ export default function LayoutTemplateButtons({
         <TemplateButton
           key="clear"
           selected={false}
-          onClick={() => setLayoutSelected(null)}
+          onClick={() => clearBoard()}
           text={"Clear"}
         />
       </div>
