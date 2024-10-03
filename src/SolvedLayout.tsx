@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { CellType, CellContentType, ColorType } from "./types";
-import { YES, NO, COLOR_OPTIONS } from "./constant";
+import { YES, NO } from "./constant";
+import {
+  generateEmptyPuzzleContent,
+  generateColors,
+  generateTotalCellsCount,
+  generatePuzzleColorsFilledCount,
+  generateIsSolved,
+  generateUniquePuzzleColorsCount,
+} from "./puzzleUtils/common";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -11,27 +19,19 @@ export default function SolvedLayout({
   size: number;
   puzzleColors: ColorType[][];
 }) {
-  const [puzzleContent, setPuzzleContent] = useState<CellContentType[][]>(() =>
-    Array.from({ length: size }, () => Array.from({ length: size }, () => null))
+  const [puzzleContent, setPuzzleContent] = useState<CellContentType[][]>(
+    generateEmptyPuzzleContent({ size })
   );
 
-  let colors: Record<string, CellType[]> = Object.fromEntries(
-    COLOR_OPTIONS.map((color) => [color, []])
-  );
+  const colors: Record<string, CellType[]> = generateColors({
+    size,
+    puzzleColors,
+  });
 
-  for (let row = 0; row < size; row++) {
-    for (let col = 0; col < size; col++) {
-      const color: ColorType = puzzleColors[row][col];
-      if (color) {
-        colors[color].push({ row, col });
-      }
-    }
-  }
-
-  const totalCellsCount: number = size * size;
-  const puzzleColorsFilledCount: number = puzzleColors
-    .flat()
-    .filter((color) => color !== null).length;
+  const totalCellsCount: number = generateTotalCellsCount({ size });
+  const puzzleColorsFilledCount: number = generatePuzzleColorsFilledCount({
+    puzzleColors,
+  });
   const isAllPuzzleColorsFilled: boolean =
     puzzleColorsFilledCount === totalCellsCount;
 
@@ -387,52 +387,7 @@ export default function SolvedLayout({
     ]
   );
 
-  const isSolved = (): boolean => {
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (puzzleContent[i][j] === null) return false;
-      }
-    }
-
-    // check every row only one YES
-    for (let i = 0; i < size; i++) {
-      const yesCount: number = puzzleContent[i].filter(
-        (cell) => cell === YES
-      ).length;
-      if (yesCount !== 1) return false;
-    }
-
-    // check every col has only one YES
-    for (let j = 0; j < size; j++) {
-      const yesCount: number = puzzleContent
-        .map((row) => row[j])
-        .filter((cell) => cell === YES).length;
-      if (yesCount !== 1) return false;
-    }
-
-    const yesCells: CellType[] = puzzleContent
-      .flatMap((row, rowIndex) =>
-        row.map((cell, colIndex) =>
-          cell === YES ? { row: rowIndex, col: colIndex } : undefined
-        )
-      )
-      .filter((cell): cell is CellType => cell !== undefined);
-    if (yesCells.length !== size) return false;
-
-    for (let n = 0; n < yesCells.length - 1; n++) {
-      const currentCell: CellType = yesCells[n];
-      if (currentCell === null) return false;
-
-      const nextCell: CellType | null = yesCells[n + 1];
-      if (nextCell === null) return false;
-
-      if (Math.abs(currentCell.col - nextCell.col) <= 1) {
-        return false;
-      }
-    }
-
-    return true;
-  };
+  const isSolved = (): boolean => generateIsSolved({ size, puzzleContent });
 
   useEffect(() => {
     for (let i = 0; i < size; i++) {
@@ -460,9 +415,9 @@ export default function SolvedLayout({
     size,
   ]);
 
-  const uniquePuzzleColorsCount: number = Object.keys(colors).filter(
-    (color) => colors[color].length > 0
-  ).length;
+  const uniquePuzzleColorsCount: number = generateUniquePuzzleColorsCount({
+    colors,
+  });
   const correctPuzzleColorsCount: boolean = size === uniquePuzzleColorsCount;
 
   return (
