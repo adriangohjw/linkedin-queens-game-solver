@@ -228,8 +228,6 @@ export default function SolvedLayout({
           }
         }
       }
-
-      console.log(111, color, cells, rowIndices, colIndices);
     },
     [getEmptyCells, size, puzzleColors, markNo]
   );
