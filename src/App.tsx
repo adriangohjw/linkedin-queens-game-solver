@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ColorType } from "./types";
+import { ColorType, CellType } from "./types";
 import INITIAL_PUZZLE_OPTIONS from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
 import LayoutTemplateButtons from "./LayoutTemplateButtons";
@@ -16,17 +16,15 @@ export default function App() {
   const size = puzzleColors.length;
 
   const setPuzzleColor = ({
-    row,
-    col,
+    cell,
     color,
   }: {
-    row: number;
-    col: number;
+    cell: CellType;
     color: ColorType;
   }): void => {
     setPuzzleColors((prev) => {
       const newGrid = [...prev];
-      newGrid[row][col] = color;
+      newGrid[cell.row][cell.col] = color;
       return newGrid;
     });
   };
