@@ -42,13 +42,15 @@ export default function App() {
         <div className="flex justify-center md:justify-start">
           <LayoutTemplateButtons setPuzzleColors={setPuzzleColors} />
         </div>
-        <div className="flex flex-col md:flex-row justify-center items-center mt-2">
-          <StartingLayout size={size} puzzleColors={puzzleColors} />
-          <SolvedLayout
-            key={JSON.stringify(puzzleColors)}
-            size={size}
-            puzzleColors={puzzleColors}
-          />
+        <div className="justify-center items-center mt-2 h-full">
+          <div className="flex-1 flex flex-col md:flex-row items-stretch">
+            <StartingLayout size={size} puzzleColors={puzzleColors} />
+            <SolvedLayout
+              key={JSON.stringify(puzzleColors)}
+              size={size}
+              puzzleColors={puzzleColors}
+            />
+          </div>
         </div>
       </div>
       <Footer />
