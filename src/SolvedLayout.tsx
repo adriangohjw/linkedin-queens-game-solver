@@ -28,9 +28,12 @@ export default function SolvedLayout({
     }
   }
 
-  const isAllPuzzleColorsFilled = puzzleColors.every((row): boolean =>
-    row.every((color) => color !== null)
-  );
+  const totalCellsCount: number = size * size;
+  const puzzleColorsFilledCount: number = puzzleColors
+    .flat()
+    .filter((color) => color !== null).length;
+  const isAllPuzzleColorsFilled: boolean =
+    puzzleColorsFilledCount === totalCellsCount;
 
   const getEmptyCells = useCallback(
     ({ color }: { color: ColorType }): CellType[] => {
@@ -457,9 +460,10 @@ export default function SolvedLayout({
     size,
   ]);
 
-  const correctPuzzleColorsCount: boolean =
-    size ===
-    Object.keys(colors).filter((color) => colors[color].length > 0).length;
+  const uniquePuzzleColorsCount: number = Object.keys(colors).filter(
+    (color) => colors[color].length > 0
+  ).length;
+  const correctPuzzleColorsCount: boolean = size === uniquePuzzleColorsCount;
 
   return (
     <Layout title="Solved Layout">
@@ -479,12 +483,19 @@ export default function SolvedLayout({
       {!isAllPuzzleColorsFilled && (
         <p className="text-xl text-red-500 font-bold">
           Please fill up starting layout
+          <br />
+          <i>
+            ({puzzleColorsFilledCount} / {totalCellsCount})
+          </i>
         </p>
       )}
       {isAllPuzzleColorsFilled && !correctPuzzleColorsCount && (
         <p className="text-xl text-red-500 font-bold">
-          Incorrect number of colors <br />
-          (should have {size})
+          Incorrect number of colors
+          <br />
+          <i>
+            ({uniquePuzzleColorsCount} / {size})
+          </i>
         </p>
       )}
     </Layout>
