@@ -7,6 +7,7 @@ import {
   generateInitialBlankPuzzle,
 } from "./InitialPuzzleOptions";
 import RulesButton from "./RulesButton";
+import PlayLinkedinQueensButton from "./PlayLinkedinQueensButton";
 import LayoutTemplateButtons from "./LayoutTemplateButtons";
 import StartingLayout from "./StartingLayout";
 import SolvedLayout from "./SolvedLayout";
@@ -54,7 +55,10 @@ export default function App() {
       <h1 className="text-3xl md:text-3xl text-2xl font-bold">
         LinkedIn Queens Game Solver
       </h1>
-      <RulesButton />
+      <div className="flex flex-row md:flew-col gap-2 justify-center">
+        <RulesButton />
+        <PlayLinkedinQueensButton />
+      </div>
       <div className="mt-4 max-w-[1200px] mx-auto">
         <div className="flex justify-center md:justify-start">
           <LayoutTemplateButtons
