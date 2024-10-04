@@ -12,10 +12,12 @@ const detectThreeAdjacentEmptyCellsInRow = ({
   row: number;
   cells: CellType[];
 }): CellContentType[][] => {
-  let uniqueColIndices: number[] = getUniqueColIndices({ cells });
+  const uniqueRowIndices: number[] = getUniqueRowIndices({ cells });
+  if (uniqueRowIndices.length !== 1) return puzzleContent;
+
+  const uniqueColIndices: number[] = getUniqueColIndices({ cells });
   if (uniqueColIndices.length !== 3) return puzzleContent;
 
-  uniqueColIndices.sort((a, b) => a - b);
   const [firstCol, secondCol, thirdCol]: [number, number, number] =
     uniqueColIndices as [number, number, number];
   if (firstCol - secondCol !== 1 || secondCol - thirdCol !== 1)
@@ -44,10 +46,12 @@ const detectThreeAdjacentEmptyCellsInCol = ({
   col: number;
   cells: CellType[];
 }): CellContentType[][] => {
-  let uniqueRowIndices: number[] = getUniqueRowIndices({ cells });
+  const uniqueColIndices = getUniqueColIndices({ cells });
+  if (uniqueColIndices.length !== 1) return puzzleContent;
+
+  const uniqueRowIndices: number[] = getUniqueRowIndices({ cells });
   if (uniqueRowIndices.length !== 3) return puzzleContent;
 
-  uniqueRowIndices.sort((a, b) => a - b);
   const [firstRow, secondRow, thirdRow]: [number, number, number] =
     uniqueRowIndices as [number, number, number];
   if (secondRow - firstRow !== 1 || thirdRow - secondRow !== 1)
@@ -81,16 +85,19 @@ const fill3AdjacentEmptyCells = ({
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
+
   newPuzzleContent = detectThreeAdjacentEmptyCellsInCol({
     puzzleContent: newPuzzleContent,
     col: emptyCells[0].col,
     cells: emptyCells,
   });
+
   newPuzzleContent = detectThreeAdjacentEmptyCellsInRow({
     puzzleContent: newPuzzleContent,
     row: emptyCells[0].row,
     cells: emptyCells,
   });
+
   return newPuzzleContent;
 };
 
