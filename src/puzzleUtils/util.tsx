@@ -153,6 +153,7 @@ export const are2CellsAdjacent = ({
 }): boolean => {
   const rowDifference = Math.abs(cell1.row - cell2.row);
   const colDifference = Math.abs(cell1.col - cell2.col);
+  if (rowDifference === 0 && colDifference === 0) return false;
   return rowDifference <= 1 && colDifference <= 1;
 };
 
