@@ -121,7 +121,7 @@ export const getEmptyCellsUtil = ({
 };
 
 export const getRowIndices = ({ cells }: { cells: CellType[] }): number[] => {
-  return cells.map((cell) => cell.row);
+  return cells.map((cell) => cell.row).sort((a, b) => a - b);
 };
 
 export const getUniqueRowIndices = ({
@@ -129,11 +129,11 @@ export const getUniqueRowIndices = ({
 }: {
   cells: CellType[];
 }): number[] => {
-  return Array.from(new Set(getRowIndices({ cells })));
+  return Array.from(new Set(getRowIndices({ cells }))).sort((a, b) => a - b);
 };
 
 export const getColIndices = ({ cells }: { cells: CellType[] }): number[] => {
-  return cells.map((cell) => cell.col);
+  return cells.map((cell) => cell.col).sort((a, b) => a - b);
 };
 
 export const getUniqueColIndices = ({
@@ -141,5 +141,5 @@ export const getUniqueColIndices = ({
 }: {
   cells: CellType[];
 }): number[] => {
-  return Array.from(new Set(getColIndices({ cells })));
+  return Array.from(new Set(getColIndices({ cells }))).sort((a, b) => a - b);
 };
