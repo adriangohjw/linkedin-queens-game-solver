@@ -19,6 +19,7 @@ import fill3AdjacentEmptyCells from "./puzzleUtils/fill3AdjacentEmptyCells";
 import fill3LShapeColor from "./puzzleUtils/fill3LShapeColor";
 import fill5CellIn3x3SqaureColor from "./puzzleUtils/fill5CellIn3x3SqaureColor";
 import fill4ZShapeColor from "./puzzleUtils/fill4ZShapeColor";
+import fill4LShapeColor from "./puzzleUtils/fill4LShapeColor";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -120,6 +121,10 @@ export default function SolvedLayout({
         emptyCells,
       });
       newPuzzleContent = fill4ZShapeColor({
+        puzzleContent: newPuzzleContent,
+        emptyCells,
+      });
+      newPuzzleContent = fill4LShapeColor({
         puzzleContent: newPuzzleContent,
         emptyCells,
       });
