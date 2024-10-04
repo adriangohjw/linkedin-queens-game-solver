@@ -4,6 +4,7 @@ import {
   getUniqueRowIndices,
   getUniqueColIndices,
   are2CellsAdjacent,
+  areCellsConnected,
   isCellInCells,
   isConsecutiveNumbers,
 } from "./util";
@@ -69,6 +70,9 @@ const isValid5CellZigZagShape = ({
       cells: emptyCells,
     }).length !== 3
   )
+    return { isValid: false, cell: null };
+
+  if (!areCellsConnected({ cells: emptyCells }))
     return { isValid: false, cell: null };
 
   const centerCell: CellType = getCenterCell({

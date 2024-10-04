@@ -157,6 +157,43 @@ export const are2CellsAdjacent = ({
   return rowDifference <= 1 && colDifference <= 1;
 };
 
+const are2CellsConnected = ({
+  cell1,
+  cell2,
+}: {
+  cell1: CellType;
+  cell2: CellType;
+}): boolean => {
+  if (cell1.row === cell2.row) {
+    const colDifference = Math.abs(cell1.col - cell2.col);
+    return colDifference === 1;
+  }
+  if (cell1.col === cell2.col) {
+    const rowDifference = Math.abs(cell1.row - cell2.row);
+    return rowDifference === 1;
+  }
+  return false;
+};
+
+export const areCellsConnected = ({
+  cells,
+}: {
+  cells: CellType[];
+}): boolean => {
+  for (let i = 0; i < cells.length - 1; i++) {
+    for (let j = 0; j < cells.length; j++) {
+      if (i === j) continue;
+      if (are2CellsConnected({ cell1: cells[i], cell2: cells[j] })) {
+        break;
+      }
+      if (j === cells.length - 1) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
 export const getRowsAndCols = ({
   cells,
 }: {
