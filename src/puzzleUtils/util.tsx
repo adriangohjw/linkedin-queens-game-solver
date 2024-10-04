@@ -180,15 +180,15 @@ export const areCellsConnected = ({
 }: {
   cells: CellType[];
 }): boolean => {
-  for (let i = 0; i < cells.length - 1; i++) {
+  for (let i = 0; i < cells.length; i++) {
+    let countUnconnected: number = 0;
     for (let j = 0; j < cells.length; j++) {
       if (i === j) continue;
       if (are2CellsConnected({ cell1: cells[i], cell2: cells[j] })) {
         break;
       }
-      if (j === cells.length - 1) {
-        return false;
-      }
+      countUnconnected++;
+      if (countUnconnected === cells.length - 1) return false;
     }
   }
   return true;
