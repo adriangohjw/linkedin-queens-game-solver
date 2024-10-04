@@ -217,7 +217,8 @@ export const isConsecutiveNumbers = ({
   length: number;
 }): boolean => {
   if (numbers.length !== length) return false;
-  if (Math.abs(numbers[0] - numbers[1]) !== 1) return false;
-  if (Math.abs(numbers[1] - numbers[2]) !== 1) return false;
+  for (let i = 0; i < numbers.length - 1; i++) {
+    if (Math.abs(numbers[i] - numbers[i + 1]) !== 1) return false;
+  }
   return true;
 };
