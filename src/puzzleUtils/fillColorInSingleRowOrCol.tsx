@@ -6,12 +6,12 @@ const fillColorInSingleRowOrCol = ({
   color,
   puzzleContent,
   puzzleColors,
-  getEmptyCells,
+  emptyCells,
 }: {
   color: ColorType;
   puzzleContent: CellContentType[][];
   puzzleColors: ColorType[][];
-  getEmptyCells: ({ color }: { color: ColorType }) => CellType[];
+  emptyCells: CellType[];
 }): CellContentType[][] => {
   const size: number = puzzleContent.length;
 
@@ -19,9 +19,7 @@ const fillColorInSingleRowOrCol = ({
     puzzleContent,
   });
 
-  const cells: CellType[] = getEmptyCells({ color });
-
-  const rowIndices = new Set(cells.map((cell) => cell.row));
+  const rowIndices = new Set(emptyCells.map((cell) => cell.row));
   if (rowIndices.size === 1) {
     const row = rowIndices.values().next().value;
     if (typeof row === "number") {
@@ -36,7 +34,7 @@ const fillColorInSingleRowOrCol = ({
     }
   }
 
-  const colIndices = new Set(cells.map((cell) => cell.col));
+  const colIndices = new Set(emptyCells.map((cell) => cell.col));
   if (colIndices.size === 1) {
     const col = colIndices.values().next().value;
     if (typeof col === "number") {

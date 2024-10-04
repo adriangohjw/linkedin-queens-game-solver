@@ -49,12 +49,9 @@ export default function SolvedLayout({
 
   const getEmptyCells = useCallback(
     ({ color }: { color: ColorType }): CellType[] => {
-      return getEmptyCellsUtil(
-        colors,
-        puzzleContent,
-        isAllPuzzleColorsFilled,
-        color
-      );
+      if (!isAllPuzzleColorsFilled) return [];
+
+      return getEmptyCellsUtil({ colors, puzzleContent, color });
     },
     [colors, puzzleContent, isAllPuzzleColorsFilled]
   );
@@ -92,21 +89,24 @@ export default function SolvedLayout({
     Object.entries(colors).forEach(([color, cells]) => {
       if (cells.length === 0) return;
 
+      const emptyCells: CellType[] = getEmptyCells({ color });
+      if (emptyCells.length === 0) return;
+
       newPuzzleContent = fillColorInSingleRowOrCol({
         color,
         puzzleContent: newPuzzleContent,
         puzzleColors,
-        getEmptyCells,
+        emptyCells,
       });
       newPuzzleContent = fill2AdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
-        getEmptyCells,
+        emptyCells,
       });
       newPuzzleContent = fill3AdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
-        getEmptyCells,
+        emptyCells,
       });
     });
 

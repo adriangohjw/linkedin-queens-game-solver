@@ -84,13 +84,12 @@ const detectTwoAdjacentEmptyCellsInRow = ({
 const fill2AdjacentEmptyCells = ({
   puzzleContent,
   color,
-  getEmptyCells,
+  emptyCells,
 }: {
   puzzleContent: CellContentType[][];
   color: ColorType;
-  getEmptyCells: ({ color }: { color: ColorType }) => CellType[];
+  emptyCells: CellType[];
 }): CellContentType[][] => {
-  const emptyCells: CellType[] = getEmptyCells({ color });
   if (emptyCells.length !== 2) return puzzleContent;
 
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({

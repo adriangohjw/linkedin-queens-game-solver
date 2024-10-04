@@ -71,13 +71,12 @@ const detectThreeAdjacentEmptyCellsInCol = ({
 const fill3AdjacentEmptyCells = ({
   puzzleContent,
   color,
-  getEmptyCells,
+  emptyCells,
 }: {
   puzzleContent: CellContentType[][];
   color: ColorType;
-  getEmptyCells: ({ color }: { color: ColorType }) => CellType[];
+  emptyCells: CellType[];
 }): CellContentType[][] => {
-  const emptyCells: CellType[] = getEmptyCells({ color });
   if (emptyCells.length !== 3) return puzzleContent;
 
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
