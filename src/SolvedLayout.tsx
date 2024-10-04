@@ -115,6 +115,36 @@ export default function SolvedLayout({
     setPuzzleContent(newPuzzleContent);
   }, [colors, getEmptyCells, puzzleColors, puzzleContent, size]);
 
+  const renderMessage = (): JSX.Element | null => {
+    if (isSolved())
+      return <p className="text-4xl text-green-500 font-bold">Solved 🥳</p>;
+
+    if (isAllPuzzleColorsFilled) {
+      if (!correctPuzzleColorsCount)
+        return (
+          <p className="text-lg text-red-500 font-bold">
+            Incorrect number of colors
+            <br />
+            <i>
+              ({uniquePuzzleColorsCount} / {size})
+            </i>
+          </p>
+        );
+    } else {
+      return (
+        <p className="text-lg text-red-500 font-bold">
+          Incorrect number of colors
+          <br />
+          <i>
+            ({uniquePuzzleColorsCount} / {size})
+          </i>
+        </p>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Layout title="Solved Layout">
       <Puzzle
@@ -127,27 +157,7 @@ export default function SolvedLayout({
         isSolved={isSolved()}
         colors={puzzleColors}
       />
-      {isSolved() && (
-        <p className="text-4xl text-green-500 font-bold">Solved 🥳</p>
-      )}
-      {!isAllPuzzleColorsFilled && (
-        <p className="text-lg text-red-500 font-bold">
-          Please fill up starting layout
-          <br />
-          <i>
-            ({puzzleColorsFilledCount} / {totalCellsCount})
-          </i>
-        </p>
-      )}
-      {isAllPuzzleColorsFilled && !correctPuzzleColorsCount && (
-        <p className="text-lg text-red-500 font-bold">
-          Incorrect number of colors
-          <br />
-          <i>
-            ({uniquePuzzleColorsCount} / {size})
-          </i>
-        </p>
-      )}
+      {renderMessage()}
     </Layout>
   );
 }
