@@ -120,12 +120,8 @@ export const getEmptyCellsUtil = ({
   return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
 };
 
-export const getRowIndices = ({
-  cells,
-}: {
-  cells: CellType[];
-}): Set<number> => {
-  return new Set(cells.map((cell) => cell.row));
+export const getRowIndices = ({ cells }: { cells: CellType[] }): number[] => {
+  return cells.map((cell) => cell.row);
 };
 
 export const getUniqueRowIndices = ({
@@ -133,15 +129,11 @@ export const getUniqueRowIndices = ({
 }: {
   cells: CellType[];
 }): number[] => {
-  return Array.from(getRowIndices({ cells }));
+  return Array.from(new Set(getRowIndices({ cells })));
 };
 
-export const getColIndices = ({
-  cells,
-}: {
-  cells: CellType[];
-}): Set<number> => {
-  return new Set(cells.map((cell) => cell.col));
+export const getColIndices = ({ cells }: { cells: CellType[] }): number[] => {
+  return cells.map((cell) => cell.col);
 };
 
 export const getUniqueColIndices = ({
@@ -149,5 +141,5 @@ export const getUniqueColIndices = ({
 }: {
   cells: CellType[];
 }): number[] => {
-  return Array.from(getColIndices({ cells }));
+  return Array.from(new Set(getColIndices({ cells })));
 };

@@ -1,7 +1,7 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
-import { getRowIndices, getColIndices } from "./util";
+import { getUniqueRowIndices, getUniqueColIndices } from "./util";
 
 const fillColorInSingleRow = ({
   size,
@@ -16,9 +16,9 @@ const fillColorInSingleRow = ({
   puzzleColors: ColorType[][];
   emptyCells: CellType[];
 }): CellContentType[][] => {
-  const rowIndices = getRowIndices({ cells: emptyCells });
-  if (rowIndices.size === 1) {
-    const row = rowIndices.values().next().value;
+  const uniqueRowIndices = getUniqueRowIndices({ cells: emptyCells });
+  if (uniqueRowIndices.length === 1) {
+    const row = uniqueRowIndices.values().next().value;
     if (typeof row === "number") {
       for (let i = 0; i < size; i++) {
         if (puzzleColors[row][i] !== color) {
@@ -46,9 +46,9 @@ const fillColorInSingleCol = ({
   puzzleColors: ColorType[][];
   emptyCells: CellType[];
 }): CellContentType[][] => {
-  const colIndices = getColIndices({ cells: emptyCells });
-  if (colIndices.size === 1) {
-    const col = colIndices.values().next().value;
+  const uniqueColIndices = getUniqueColIndices({ cells: emptyCells });
+  if (uniqueColIndices.length === 1) {
+    const col = uniqueColIndices.values().next().value;
     if (typeof col === "number") {
       for (let i = 0; i < size; i++) {
         if (puzzleColors[i][col] !== color) {
