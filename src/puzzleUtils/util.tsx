@@ -198,3 +198,13 @@ export const getColsAndRows = ({
 
   return rowColMap;
 };
+
+export const isCellInCells = ({
+  cell,
+  cells,
+}: {
+  cell: CellType;
+  cells: CellType[];
+}): boolean => {
+  return cells.some((c) => c.row === cell.row && c.col === cell.col);
+};
