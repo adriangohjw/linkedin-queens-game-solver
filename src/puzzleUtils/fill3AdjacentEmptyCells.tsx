@@ -1,6 +1,7 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
+import { getUniqueRowIndices, getUniqueColIndices } from "./util";
 
 const detectThreeAdjacentEmptyCellsInRow = ({
   puzzleContent,
@@ -11,8 +12,7 @@ const detectThreeAdjacentEmptyCellsInRow = ({
   row: number;
   cells: CellType[];
 }): CellContentType[][] => {
-  const colIndices: number[] = cells.map((cell) => cell.col);
-  let uniqueColIndices: number[] = Array.from(new Set(colIndices));
+  let uniqueColIndices: number[] = getUniqueColIndices({ cells });
   if (uniqueColIndices.length !== 3) return puzzleContent;
 
   uniqueColIndices.sort((a, b) => a - b);
@@ -44,8 +44,7 @@ const detectThreeAdjacentEmptyCellsInCol = ({
   col: number;
   cells: CellType[];
 }): CellContentType[][] => {
-  const rowIndices: number[] = cells.map((cell) => cell.row);
-  let uniqueRowIndices: number[] = Array.from(new Set(rowIndices));
+  let uniqueRowIndices: number[] = getUniqueRowIndices({ cells });
   if (uniqueRowIndices.length !== 3) return puzzleContent;
 
   uniqueRowIndices.sort((a, b) => a - b);

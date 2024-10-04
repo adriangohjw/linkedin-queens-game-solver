@@ -1,6 +1,7 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
+import { getRowIndices, getColIndices } from "./util";
 
 const fillColorInSingleRowOrCol = ({
   color,
@@ -19,7 +20,7 @@ const fillColorInSingleRowOrCol = ({
     puzzleContent,
   });
 
-  const rowIndices = new Set(emptyCells.map((cell) => cell.row));
+  const rowIndices = getRowIndices({ cells: emptyCells });
   if (rowIndices.size === 1) {
     const row = rowIndices.values().next().value;
     if (typeof row === "number") {
@@ -34,7 +35,7 @@ const fillColorInSingleRowOrCol = ({
     }
   }
 
-  const colIndices = new Set(emptyCells.map((cell) => cell.col));
+  const colIndices = getColIndices({ cells: emptyCells });
   if (colIndices.size === 1) {
     const col = colIndices.values().next().value;
     if (typeof col === "number") {

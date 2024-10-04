@@ -119,3 +119,35 @@ export const getEmptyCellsUtil = ({
   const cells: CellType[] = colors[color as string];
   return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
 };
+
+export const getRowIndices = ({
+  cells,
+}: {
+  cells: CellType[];
+}): Set<number> => {
+  return new Set(cells.map((cell) => cell.row));
+};
+
+export const getUniqueRowIndices = ({
+  cells,
+}: {
+  cells: CellType[];
+}): number[] => {
+  return Array.from(getRowIndices({ cells }));
+};
+
+export const getColIndices = ({
+  cells,
+}: {
+  cells: CellType[];
+}): Set<number> => {
+  return new Set(cells.map((cell) => cell.col));
+};
+
+export const getUniqueColIndices = ({
+  cells,
+}: {
+  cells: CellType[];
+}): number[] => {
+  return Array.from(getColIndices({ cells }));
+};
