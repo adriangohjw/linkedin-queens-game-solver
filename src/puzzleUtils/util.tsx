@@ -143,3 +143,57 @@ export const getUniqueColIndices = ({
 }): number[] => {
   return Array.from(new Set(getColIndices({ cells }))).sort((a, b) => a - b);
 };
+
+export const are2CellsAdjacent = ({
+  cell1,
+  cell2,
+}: {
+  cell1: CellType;
+  cell2: CellType;
+}): boolean => {
+  const rowDifference = Math.abs(cell1.row - cell2.row);
+  const colDifference = Math.abs(cell1.col - cell2.col);
+  return rowDifference <= 1 && colDifference <= 1;
+};
+
+export const getRowsAndCols = ({
+  cells,
+}: {
+  cells: CellType[];
+}): Record<number, number[]> => {
+  const rowColMap: Record<number, number[]> = {};
+
+  cells.forEach((cell) => {
+    if (!rowColMap[cell.row]) {
+      rowColMap[cell.row] = [];
+    }
+    rowColMap[cell.row].push(cell.col);
+  });
+
+  Object.keys(rowColMap).forEach((row) => {
+    rowColMap[+row].sort((a, b) => a - b);
+  });
+
+  return rowColMap;
+};
+
+export const getColsAndRows = ({
+  cells,
+}: {
+  cells: CellType[];
+}): Record<number, number[]> => {
+  const rowColMap: Record<number, number[]> = {};
+
+  cells.forEach((cell) => {
+    if (!rowColMap[cell.col]) {
+      rowColMap[cell.col] = [];
+    }
+    rowColMap[cell.col].push(cell.row);
+  });
+
+  Object.keys(rowColMap).forEach((col) => {
+    rowColMap[+col].sort((a, b) => a - b);
+  });
+
+  return rowColMap;
+};

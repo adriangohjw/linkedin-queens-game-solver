@@ -16,6 +16,7 @@ import fill1ColorCol from "./puzzleUtils/fill1ColorCol";
 import fillColorInSingleRowOrCol from "./puzzleUtils/fillColorInSingleRowOrCol";
 import fill2AdjacentEmptyCells from "./puzzleUtils/fill2AdjacentEmptyCells";
 import fill3AdjacentEmptyCells from "./puzzleUtils/fill3AdjacentEmptyCells";
+import fill3LShapeColor from "./puzzleUtils/fill3LShapeColor";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -106,6 +107,10 @@ export default function SolvedLayout({
       newPuzzleContent = fill3AdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
+        emptyCells,
+      });
+      newPuzzleContent = fill3LShapeColor({
+        puzzleContent: newPuzzleContent,
         emptyCells,
       });
     });
