@@ -7,39 +7,12 @@ import {
   getUniqueColIndices,
   isConsecutiveNumbers,
   are2CellsAdjacent,
+  create2SetsOfDiagonalCorners,
 } from "./util";
 
 const splitArrayInto2Arrays = ({ array }: { array: number[] }): number[][] => {
   const mid: number = Math.floor(array.length / 2);
   return [array.slice(0, mid), array.slice(mid)];
-};
-
-const create2SetsOfDiagonalCorners = ({
-  indices1,
-  indices2,
-}: {
-  indices1: number[];
-  indices2: number[];
-}): CellType[][] => {
-  return [
-    [
-      { row: indices1[0], col: indices2[0] } as CellType,
-      {
-        row: indices1[indices1.length - 1],
-        col: indices2[indices2.length - 1],
-      } as CellType,
-    ],
-    [
-      {
-        row: indices1[0],
-        col: indices2[indices2.length - 1],
-      } as CellType,
-      {
-        row: indices1[indices1.length - 1],
-        col: indices2[0],
-      } as CellType,
-    ],
-  ];
 };
 
 const isValidVerticalZShape = ({

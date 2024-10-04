@@ -259,3 +259,31 @@ export const isConsecutiveNumbers = ({
   }
   return true;
 };
+
+export const create2SetsOfDiagonalCorners = ({
+  indices1,
+  indices2,
+}: {
+  indices1: number[];
+  indices2: number[];
+}): CellType[][] => {
+  return [
+    [
+      { row: indices1[0], col: indices2[0] } as CellType,
+      {
+        row: indices1[indices1.length - 1],
+        col: indices2[indices2.length - 1],
+      } as CellType,
+    ],
+    [
+      {
+        row: indices1[0],
+        col: indices2[indices2.length - 1],
+      } as CellType,
+      {
+        row: indices1[indices1.length - 1],
+        col: indices2[0],
+      } as CellType,
+    ],
+  ];
+};
