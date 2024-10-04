@@ -208,3 +208,16 @@ export const isCellInCells = ({
 }): boolean => {
   return cells.some((c) => c.row === cell.row && c.col === cell.col);
 };
+
+export const isConsecutiveNumbers = ({
+  numbers,
+  length,
+}: {
+  numbers: number[];
+  length: number;
+}): boolean => {
+  if (numbers.length !== length) return false;
+  if (Math.abs(numbers[0] - numbers[1]) !== 1) return false;
+  if (Math.abs(numbers[1] - numbers[2]) !== 1) return false;
+  return true;
+};

@@ -5,6 +5,7 @@ import {
   getUniqueColIndices,
   are2CellsAdjacent,
   isCellInCells,
+  isConsecutiveNumbers,
 } from "./util";
 
 // Assuming in 3x3 grid,
@@ -29,24 +30,19 @@ const isValid5CellNoCenterShape = ({
 }: {
   emptyCells: CellType[];
 }): boolean => {
-  const consecutive3Numbers = ({ numbers }: { numbers: number[] }): boolean => {
-    if (numbers.length !== 3) return false;
-    if (Math.abs(numbers[0] - numbers[1]) !== 1) return false;
-    if (Math.abs(numbers[1] - numbers[2]) !== 1) return false;
-    return true;
-  };
-
-  const isValidRowIndices: boolean = consecutive3Numbers({
+  const isValidRowIndices: boolean = isConsecutiveNumbers({
     numbers: getUniqueRowIndices({
       cells: emptyCells,
     }),
+    length: 3,
   });
   if (!isValidRowIndices) return false;
 
-  const isValidColIndices: boolean = consecutive3Numbers({
+  const isValidColIndices: boolean = isConsecutiveNumbers({
     numbers: getUniqueColIndices({
       cells: emptyCells,
     }),
+    length: 3,
   });
   if (!isValidColIndices) return false;
 
