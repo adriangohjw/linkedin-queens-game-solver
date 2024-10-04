@@ -2,18 +2,18 @@ import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
 
-const detectSingleColorRow = ({
+const fill1ColorCol = ({
   puzzleContent,
-  row,
+  col,
   puzzleColors,
 }: {
   puzzleContent: CellContentType[][];
-  row: number;
+  col: number;
   puzzleColors: ColorType[][];
-}) => {
+}): CellContentType[][] => {
   const size: number = puzzleContent.length;
 
-  const emptyCellIndices: number[] = puzzleContent[row]
+  const emptyCellIndices: number[] = puzzleColors[col]
     .map((cell, index) => (cell === null ? index : -1))
     .filter((index) => index !== -1);
 
@@ -21,7 +21,7 @@ const detectSingleColorRow = ({
 
   const uniqueColors: Set<ColorType> = new Set(
     emptyCellIndices
-      .map((index) => puzzleColors[row][index])
+      .map((index) => puzzleColors[index][col])
       .filter((cell) => cell !== null)
   );
   if (uniqueColors.size === 1) {
@@ -30,14 +30,14 @@ const detectSingleColorRow = ({
       let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
         puzzleContent,
       });
-      // markNoForColorExceptRow
+      // markNoForColorExceptCol
       for (let i = 0; i < size; i++) {
-        if (i !== row) {
+        if (i !== col) {
           for (let j = 0; j < size; j++) {
-            if (puzzleColors[i][j] === color) {
+            if (puzzleColors[j][i] === color) {
               newPuzzleContent = markNo({
                 puzzleContent: newPuzzleContent,
-                cell: { row: i, col: j } as CellType,
+                cell: { row: j, col: i } as CellType,
               });
             }
           }
@@ -50,4 +50,4 @@ const detectSingleColorRow = ({
   return puzzleContent;
 };
 
-export default detectSingleColorRow;
+export default fill1ColorCol;

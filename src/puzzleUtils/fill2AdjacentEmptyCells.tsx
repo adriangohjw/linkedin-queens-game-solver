@@ -81,7 +81,7 @@ const detectTwoAdjacentEmptyCellsInRow = ({
   return newPuzzleContent;
 };
 
-const detectTwoAdjacentEmptyCells = ({
+const fill2AdjacentEmptyCells = ({
   puzzleContent,
   color,
   getEmptyCells,
@@ -109,4 +109,4 @@ const detectTwoAdjacentEmptyCells = ({
   return newPuzzleContent;
 };
 
-export default detectTwoAdjacentEmptyCells;
+export default fill2AdjacentEmptyCells;

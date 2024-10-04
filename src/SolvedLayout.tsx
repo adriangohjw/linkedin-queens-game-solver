@@ -9,13 +9,13 @@ import {
   generateUniquePuzzleColorsCount,
   getEmptyCellsUtil,
 } from "./puzzleUtils/util";
-import fillSingleEmptyCellInRow from "./puzzleUtils/fillSingleEmptyCellInRow";
-import fillSingleEmptyCellInCol from "./puzzleUtils/fillSingleEmptyCellInCol";
-import detectSingleColorRow from "./puzzleUtils/detectSingleColorRow";
-import detectSingleColorCol from "./puzzleUtils/detectSingleColorCol";
-import detectIfColorInSingleRowOrCol from "./puzzleUtils/detectIfColorInSingleRowOrCol";
-import detectTwoAdjacentEmptyCells from "./puzzleUtils/detectTwoAdjacentEmptyCells";
-import detectThreeAdjacentEmptyCells from "./puzzleUtils/detectThreeAdjacentEmptyCells";
+import fill1EmptyCellInRow from "./puzzleUtils/fill1EmptyCellInRow";
+import fill1EmptyCellInCol from "./puzzleUtils/fill1EmptyCellInCol";
+import fill1ColorRow from "./puzzleUtils/fill1ColorRow";
+import fill1ColorCol from "./puzzleUtils/fill1ColorCol";
+import fillColorInSingleRowOrCol from "./puzzleUtils/fillColorInSingleRowOrCol";
+import fill2AdjacentEmptyCells from "./puzzleUtils/fill2AdjacentEmptyCells";
+import fill3AdjacentEmptyCells from "./puzzleUtils/fill3AdjacentEmptyCells";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -64,24 +64,24 @@ export default function SolvedLayout({
   useEffect(() => {
     let newPuzzleContent: CellContentType[][] = puzzleContent;
     for (let i = 0; i < size; i++) {
-      newPuzzleContent = fillSingleEmptyCellInRow({
+      newPuzzleContent = fill1EmptyCellInRow({
         puzzleContent: newPuzzleContent,
         row: i,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = fillSingleEmptyCellInCol({
+      newPuzzleContent = fill1EmptyCellInCol({
         puzzleContent: newPuzzleContent,
         col: i,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = detectSingleColorRow({
+      newPuzzleContent = fill1ColorRow({
         puzzleContent: newPuzzleContent,
         row: i,
         puzzleColors,
       });
-      newPuzzleContent = detectSingleColorCol({
+      newPuzzleContent = fill1ColorCol({
         puzzleContent: newPuzzleContent,
         col: i,
         puzzleColors,
@@ -89,18 +89,18 @@ export default function SolvedLayout({
     }
 
     Object.keys(colors).forEach((color) => {
-      newPuzzleContent = detectIfColorInSingleRowOrCol({
+      newPuzzleContent = fillColorInSingleRowOrCol({
         color,
         puzzleContent: newPuzzleContent,
         puzzleColors,
         getEmptyCells,
       });
-      newPuzzleContent = detectTwoAdjacentEmptyCells({
+      newPuzzleContent = fill2AdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
         getEmptyCells,
       });
-      newPuzzleContent = detectThreeAdjacentEmptyCells({
+      newPuzzleContent = fill3AdjacentEmptyCells({
         puzzleContent: newPuzzleContent,
         color,
         getEmptyCells,

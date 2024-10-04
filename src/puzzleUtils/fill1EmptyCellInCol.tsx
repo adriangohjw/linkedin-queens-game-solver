@@ -1,7 +1,7 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import { markYes } from "./markUtils";
 
-const fillSingleEmptyCellInCol = ({
+const fill1EmptyCellInCol = ({
   puzzleContent,
   col,
   puzzleColors,
@@ -31,4 +31,4 @@ const fillSingleEmptyCellInCol = ({
   return puzzleContent;
 };
 
-export default fillSingleEmptyCellInCol;
+export default fill1EmptyCellInCol;

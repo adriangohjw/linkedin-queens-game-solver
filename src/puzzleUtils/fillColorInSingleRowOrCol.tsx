@@ -2,7 +2,7 @@ import { CellContentType, CellType, ColorType } from "../types";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
 
-const detectIfColorInSingleRowOrCol = ({
+const fillColorInSingleRowOrCol = ({
   color,
   puzzleContent,
   puzzleColors,
@@ -54,4 +54,4 @@ const detectIfColorInSingleRowOrCol = ({
   return newPuzzleContent;
 };
 
-export default detectIfColorInSingleRowOrCol;
+export default fillColorInSingleRowOrCol;

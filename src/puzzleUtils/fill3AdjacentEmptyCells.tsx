@@ -68,7 +68,7 @@ const detectThreeAdjacentEmptyCellsInCol = ({
   return newPuzzleContent;
 };
 
-const detectThreeAdjacentEmptyCells = ({
+const fill3AdjacentEmptyCells = ({
   puzzleContent,
   color,
   getEmptyCells,
@@ -96,4 +96,4 @@ const detectThreeAdjacentEmptyCells = ({
   return newPuzzleContent;
 };
 
-export default detectThreeAdjacentEmptyCells;
+export default fill3AdjacentEmptyCells;
