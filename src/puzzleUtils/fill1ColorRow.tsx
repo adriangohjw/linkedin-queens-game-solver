@@ -1,6 +1,33 @@
 import { CellContentType, CellType, ColorType } from "../types";
-import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { markNo } from "./markUtils";
+
+const markNoForColorExceptRow = ({
+  puzzleContent,
+  puzzleColors,
+  size,
+  row,
+  color,
+}: {
+  puzzleContent: CellContentType[][];
+  puzzleColors: ColorType[][];
+  size: number;
+  row: number;
+  color: ColorType;
+}): CellContentType[][] => {
+  for (let i = 0; i < size; i++) {
+    if (i !== row) {
+      for (let j = 0; j < size; j++) {
+        if (puzzleColors[i][j] === color) {
+          puzzleContent = markNo({
+            puzzleContent,
+            cell: { row: i, col: j } as CellType,
+          });
+        }
+      }
+    }
+  }
+  return puzzleContent;
+};
 
 const fill1ColorRow = ({
   puzzleContent,
@@ -24,30 +51,18 @@ const fill1ColorRow = ({
       .map((index) => puzzleColors[row][index])
       .filter((cell) => cell !== null)
   );
-  if (uniqueColors.size === 1) {
-    const color: ColorType = uniqueColors.values().next().value;
-    if (color) {
-      let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
+  if (uniqueColors.size !== 1) return puzzleContent;
+
+  const color: ColorType = uniqueColors.values().next().value;
+  return color
+    ? markNoForColorExceptRow({
         puzzleContent,
-      });
-      // markNoForColorExceptRow
-      for (let i = 0; i < size; i++) {
-        if (i !== row) {
-          for (let j = 0; j < size; j++) {
-            if (puzzleColors[i][j] === color) {
-              newPuzzleContent = markNo({
-                puzzleContent: newPuzzleContent,
-                cell: { row: i, col: j } as CellType,
-              });
-            }
-          }
-        }
-      }
-      return newPuzzleContent;
-    }
-    return puzzleContent;
-  }
-  return puzzleContent;
+        puzzleColors,
+        size,
+        row,
+        color,
+      })
+    : puzzleContent;
 };
 
 export default fill1ColorRow;
