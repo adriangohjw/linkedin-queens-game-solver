@@ -63,6 +63,7 @@ export default function SolvedLayout({
 
   useEffect(() => {
     let newPuzzleContent: CellContentType[][] = puzzleContent;
+
     for (let i = 0; i < size; i++) {
       newPuzzleContent = fill1EmptyCellInRow({
         puzzleContent: newPuzzleContent,
@@ -106,6 +107,9 @@ export default function SolvedLayout({
         getEmptyCells,
       });
     });
+
+    if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
+      return;
     setPuzzleContent(newPuzzleContent);
   }, [colors, getEmptyCells, puzzleColors, puzzleContent, size]);
 
