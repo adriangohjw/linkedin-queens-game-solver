@@ -57,6 +57,20 @@ const isValid5CellZigZagShape = ({
 }: {
   emptyCells: CellType[];
 }): { isValid: boolean; cell: CellType | null } => {
+  if (
+    getUniqueRowIndices({
+      cells: emptyCells,
+    }).length !== 3
+  )
+    return { isValid: false, cell: null };
+
+  if (
+    getUniqueColIndices({
+      cells: emptyCells,
+    }).length !== 3
+  )
+    return { isValid: false, cell: null };
+
   const centerCell: CellType = getCenterCell({
     emptyCells,
   });
