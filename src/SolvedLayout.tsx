@@ -89,7 +89,9 @@ export default function SolvedLayout({
       });
     }
 
-    Object.keys(colors).forEach((color) => {
+    Object.entries(colors).forEach(([color, cells]) => {
+      if (cells.length === 0) return;
+
       newPuzzleContent = fillColorInSingleRowOrCol({
         color,
         puzzleContent: newPuzzleContent,
