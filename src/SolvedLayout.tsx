@@ -61,7 +61,8 @@ export default function SolvedLayout({
     [colors, puzzleContent, isAllPuzzleColorsFilled]
   );
 
-  const isSolved = (): boolean => generateIsSolved({ size, puzzleContent });
+  const isSolved = (): boolean =>
+    generateIsSolved({ size, puzzleContent, puzzleColors });
 
   useEffect(() => {
     let newPuzzleContent: CellContentType[][] = puzzleContent;

@@ -57,10 +57,19 @@ export const generateUniquePuzzleColorsCount = ({
 export const generateIsSolved = ({
   size,
   puzzleContent,
+  puzzleColors,
 }: {
   size: number;
   puzzleContent: CellContentType[][];
+  puzzleColors: ColorType[][];
 }): boolean => {
+  if (
+    generateUniquePuzzleColorsCount({
+      colors: generateColors({ size, puzzleColors }),
+    }) !== size
+  )
+    return false;
+
   for (let i = 0; i < size; i++) {
     for (let j = 0; j < size; j++) {
       if (puzzleContent[i][j] === null) return false;
