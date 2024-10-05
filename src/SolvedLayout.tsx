@@ -29,7 +29,6 @@ export default function SolvedLayout({
   );
 
   const colors: Record<string, CellType[]> = generateColors({
-    size,
     puzzleColors,
   });
 

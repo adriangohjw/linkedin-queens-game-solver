@@ -12,12 +12,12 @@ export const generateEmptyPuzzleContent = ({
 };
 
 export const generateColors = ({
-  size,
   puzzleColors,
 }: {
-  size: number;
   puzzleColors: ColorType[][];
 }): Record<string, CellType[]> => {
+  const size: number = puzzleColors.length;
+
   let colors: Record<string, CellType[]> = Object.fromEntries(
     COLOR_OPTIONS.map((color) => [color, []])
   );
@@ -65,7 +65,7 @@ export const generateIsSolved = ({
 }): boolean => {
   if (
     generateUniquePuzzleColorsCount({
-      colors: generateColors({ size, puzzleColors }),
+      colors: generateColors({ puzzleColors }),
     }) !== size
   )
     return false;
