@@ -53,11 +53,14 @@ export default function SolvedLayout({
     [colors, puzzleContent, isAllPuzzleColorsFilled]
   );
 
-  const isSolved = (): boolean =>
-    generateIsSolved({ size, puzzleContent, puzzleColors });
+  const isSolved: boolean = generateIsSolved({
+    size,
+    puzzleContent,
+    puzzleColors,
+  });
 
   useEffect(() => {
-    if (isSolved()) return;
+    if (isSolved) return;
 
     let newPuzzleContent: CellContentType[][] = puzzleContent;
 
@@ -105,7 +108,7 @@ export default function SolvedLayout({
   }, [colors, getEmptyCells, isSolved, puzzleColors, puzzleContent, size]);
 
   const renderMessage = (): JSX.Element | null => {
-    if (isSolved())
+    if (isSolved)
       return <p className="text-4xl text-green-500 font-bold">Solved 🥳</p>;
 
     if (isAllPuzzleColorsFilled) {
@@ -143,7 +146,7 @@ export default function SolvedLayout({
             ? puzzleContent
             : undefined
         }
-        isSolved={isSolved()}
+        isSolved={isSolved}
         colors={puzzleColors}
       />
       {renderMessage()}
