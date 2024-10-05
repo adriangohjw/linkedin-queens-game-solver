@@ -55,14 +55,14 @@ export const generateUniquePuzzleColorsCount = ({
 };
 
 export const generateIsSolved = ({
-  size,
   puzzleContent,
   puzzleColors,
 }: {
-  size: number;
   puzzleContent: CellContentType[][];
   puzzleColors: ColorType[][];
 }): boolean => {
+  const size: number = puzzleContent.length;
+
   if (
     generateUniquePuzzleColorsCount({
       colors: generateColors({ puzzleColors }),

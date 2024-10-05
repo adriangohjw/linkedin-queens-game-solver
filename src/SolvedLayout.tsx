@@ -54,7 +54,6 @@ export default function SolvedLayout({
   );
 
   const isSolved: boolean = generateIsSolved({
-    size,
     puzzleContent,
     puzzleColors,
   });
