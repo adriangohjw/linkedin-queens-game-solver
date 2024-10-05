@@ -1,7 +1,29 @@
 import { CellContentType, CellType } from "../types";
 import { markNo } from "./markUtils";
-import { are2CellsAdjacent, isCellInCells } from "./util";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
+
+const isCellInCells = ({
+  cell,
+  cells,
+}: {
+  cell: CellType;
+  cells: CellType[];
+}): boolean => {
+  return cells.some((c) => c.row === cell.row && c.col === cell.col);
+};
+
+const are2CellsAdjacent = ({
+  cell1,
+  cell2,
+}: {
+  cell1: CellType;
+  cell2: CellType;
+}): boolean => {
+  const rowDifference = Math.abs(cell1.row - cell2.row);
+  const colDifference = Math.abs(cell1.col - cell2.col);
+  if (rowDifference === 0 && colDifference === 0) return false;
+  return rowDifference <= 1 && colDifference <= 1;
+};
 
 const cannotBeMarkedYesTogether = ({
   cell1,
