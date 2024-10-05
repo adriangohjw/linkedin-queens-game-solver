@@ -13,14 +13,7 @@ import fill1EmptyCellInRow from "./puzzleUtils/fill1EmptyCellInRow";
 import fill1EmptyCellInCol from "./puzzleUtils/fill1EmptyCellInCol";
 import fill1ColorRow from "./puzzleUtils/fill1ColorRow";
 import fill1ColorCol from "./puzzleUtils/fill1ColorCol";
-import fillColorInSingleRowOrCol from "./puzzleUtils/fillColorInSingleRowOrCol";
-import fill2AdjacentEmptyCells from "./puzzleUtils/fill2AdjacentEmptyCells";
-import fill3AdjacentEmptyCells from "./puzzleUtils/fill3AdjacentEmptyCells";
-import fill3LShapeColor from "./puzzleUtils/fill3LShapeColor";
-import fill5CellIn3x3SqaureColor from "./puzzleUtils/fill5CellIn3x3SqaureColor";
-import fill4ZShapeColor from "./puzzleUtils/fill4ZShapeColor";
-import fill4LShapeColor from "./puzzleUtils/fill4LShapeColor";
-import fillTShapeColor from "./puzzleUtils/fillTShapeColor";
+import fillAllNoForColor from "./puzzleUtils/fillAllNoForColor";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -98,39 +91,7 @@ export default function SolvedLayout({
       const emptyCells: CellType[] = getEmptyCells({ color });
       if (emptyCells.length === 0) return;
 
-      newPuzzleContent = fillColorInSingleRowOrCol({
-        color,
-        puzzleContent: newPuzzleContent,
-        puzzleColors,
-        emptyCells,
-      });
-      newPuzzleContent = fill2AdjacentEmptyCells({
-        puzzleContent: newPuzzleContent,
-        color,
-        emptyCells,
-      });
-      newPuzzleContent = fill3AdjacentEmptyCells({
-        puzzleContent: newPuzzleContent,
-        color,
-        emptyCells,
-      });
-      newPuzzleContent = fill3LShapeColor({
-        puzzleContent: newPuzzleContent,
-        emptyCells,
-      });
-      newPuzzleContent = fill5CellIn3x3SqaureColor({
-        puzzleContent: newPuzzleContent,
-        emptyCells,
-      });
-      newPuzzleContent = fill4ZShapeColor({
-        puzzleContent: newPuzzleContent,
-        emptyCells,
-      });
-      newPuzzleContent = fill4LShapeColor({
-        puzzleContent: newPuzzleContent,
-        emptyCells,
-      });
-      newPuzzleContent = fillTShapeColor({
+      newPuzzleContent = fillAllNoForColor({
         puzzleContent: newPuzzleContent,
         emptyCells,
       });
