@@ -57,6 +57,8 @@ export default function SolvedLayout({
     generateIsSolved({ size, puzzleContent, puzzleColors });
 
   useEffect(() => {
+    if (isSolved()) return;
+
     let newPuzzleContent: CellContentType[][] = puzzleContent;
 
     for (let i = 0; i < size; i++) {
@@ -98,8 +100,9 @@ export default function SolvedLayout({
 
     if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
       return;
+
     setPuzzleContent(newPuzzleContent);
-  }, [colors, getEmptyCells, puzzleColors, puzzleContent, size]);
+  }, [colors, getEmptyCells, isSolved, puzzleColors, puzzleContent, size]);
 
   const renderMessage = (): JSX.Element | null => {
     if (isSolved())
