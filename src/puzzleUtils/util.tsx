@@ -116,6 +116,20 @@ export const generateIsSolved = ({
   return true;
 };
 
+export const getAllEmptyCellsUtil = ({
+  puzzleContent,
+}: {
+  puzzleContent: CellContentType[][];
+}): CellType[] => {
+  return puzzleContent
+    .flatMap((row, rowIndex) =>
+      row.map((cell, colIndex) =>
+        cell === null ? { row: rowIndex, col: colIndex } : null
+      )
+    )
+    .filter((cell): cell is CellType => cell !== null);
+};
+
 export const getEmptyCellsUtil = ({
   colors,
   puzzleContent,

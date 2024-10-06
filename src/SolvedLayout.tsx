@@ -9,10 +9,7 @@ import {
   generateUniquePuzzleColorsCount,
   getEmptyCellsUtil,
 } from "./puzzleUtils/util";
-import fill1EmptyCellInRow from "./puzzleUtils/fill1EmptyCellInRow";
-import fill1EmptyCellInCol from "./puzzleUtils/fill1EmptyCellInCol";
-import fillAllNoForColor from "./puzzleUtils/fillAllNoForColor";
-import fillMultiLinesPermutation from "./puzzleUtils/fillMultiLinesPermutation";
+import fillPuzzle from "./puzzleUtils/fillPuzzle";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -60,42 +57,11 @@ export default function SolvedLayout({
   useEffect(() => {
     if (isSolved) return;
 
-    let newPuzzleContent: CellContentType[][] = puzzleContent;
-
-    for (let i = 0; i < size; i++) {
-      newPuzzleContent = fill1EmptyCellInRow({
-        puzzleContent: newPuzzleContent,
-        row: i,
-        puzzleColors,
-        getEmptyCells,
-      });
-      newPuzzleContent = fill1EmptyCellInCol({
-        puzzleContent: newPuzzleContent,
-        col: i,
-        puzzleColors,
-        getEmptyCells,
-      });
-    }
-
-    Object.entries(colors).forEach(([color, cells]) => {
-      if (cells.length === 0) return;
-
-      const emptyCells: CellType[] = getEmptyCells({ color });
-      if (emptyCells.length === 0) return;
-
-      newPuzzleContent = fillAllNoForColor({
-        puzzleContent: newPuzzleContent,
-        emptyCells,
-      });
-    });
-
-    newPuzzleContent = fillMultiLinesPermutation({
-      puzzleContent: newPuzzleContent,
+    let newPuzzleContent: CellContentType[][] = fillPuzzle({
+      puzzleContent,
       puzzleColors,
+      getEmptyCells,
     });
-
-    if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
-      return;
 
     setPuzzleContent(newPuzzleContent);
   }, [colors, getEmptyCells, isSolved, puzzleColors, puzzleContent, size]);
