@@ -14,6 +14,7 @@ import fill1EmptyCellInCol from "./puzzleUtils/fill1EmptyCellInCol";
 import fill1ColorRow from "./puzzleUtils/fill1ColorRow";
 import fill1ColorCol from "./puzzleUtils/fill1ColorCol";
 import fillAllNoForColor from "./puzzleUtils/fillAllNoForColor";
+import fillMultiLinesPermutation from "./puzzleUtils/fillMultiLinesPermutation";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -98,6 +99,11 @@ export default function SolvedLayout({
         puzzleContent: newPuzzleContent,
         emptyCells,
       });
+    });
+
+    newPuzzleContent = fillMultiLinesPermutation({
+      puzzleContent: newPuzzleContent,
+      puzzleColors,
     });
 
     if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
