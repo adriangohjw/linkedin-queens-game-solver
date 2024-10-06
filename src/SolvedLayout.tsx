@@ -11,8 +11,6 @@ import {
 } from "./puzzleUtils/util";
 import fill1EmptyCellInRow from "./puzzleUtils/fill1EmptyCellInRow";
 import fill1EmptyCellInCol from "./puzzleUtils/fill1EmptyCellInCol";
-import fill1ColorRow from "./puzzleUtils/fill1ColorRow";
-import fill1ColorCol from "./puzzleUtils/fill1ColorCol";
 import fillAllNoForColor from "./puzzleUtils/fillAllNoForColor";
 import fillMultiLinesPermutation from "./puzzleUtils/fillMultiLinesPermutation";
 import Layout from "./Layout";
@@ -76,16 +74,6 @@ export default function SolvedLayout({
         col: i,
         puzzleColors,
         getEmptyCells,
-      });
-      newPuzzleContent = fill1ColorRow({
-        puzzleContent: newPuzzleContent,
-        row: i,
-        puzzleColors,
-      });
-      newPuzzleContent = fill1ColorCol({
-        puzzleContent: newPuzzleContent,
-        col: i,
-        puzzleColors,
       });
     }
 
