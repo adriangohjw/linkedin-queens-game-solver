@@ -1,5 +1,7 @@
 # LinkedIn Queens Game Solver
 
+![Demo](demo.gif)
+
 This application is a solver for the LinkedIn Queens Game, a puzzle where the objective is to place queens on a chessboard such that no two queens threaten each other.
 
 The solver utilizes algorithms to explore possible configurations and find a valid arrangement of queens. Users can interact with the app to get the solution for the current puzzle.
