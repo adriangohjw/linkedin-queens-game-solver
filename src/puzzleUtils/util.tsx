@@ -125,6 +125,8 @@ export const getEmptyCellsForColor = ({
   puzzleColors: ColorType[][];
   color: ColorType;
 }): CellType[] => {
+  if (color === null) return [];
+
   const colors: Record<string, CellType[]> = generateColors({
     puzzleColors,
   });
