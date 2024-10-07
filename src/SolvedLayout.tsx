@@ -56,7 +56,7 @@ export default function SolvedLayout({
       return;
 
     setPuzzleContent(newPuzzleContent);
-  }, [colors, isSolved, puzzleColors, puzzleContent, size]);
+  }, [isSolved, puzzleColors, puzzleContent]);
 
   const renderMessage = (): JSX.Element | null => {
     if (isSolved)
