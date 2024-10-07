@@ -1,5 +1,5 @@
 import { CellContentType, CellType, ColorType } from "../types";
-import { generateColors } from "./util";
+import { generateColors, getEmptyCellsForColor } from "./util";
 import fill1EmptyCellInRow from "./fill1EmptyCellInRow";
 import fill1EmptyCellInCol from "./fill1EmptyCellInCol";
 import fillAllNoForColor from "./fillAllNoForColor";
@@ -16,15 +16,6 @@ const fillPuzzle = ({
     puzzleColors,
   });
 
-  const getEmptyCellsForColor = ({
-    color,
-  }: {
-    color: ColorType;
-  }): CellType[] => {
-    const cells: CellType[] = colors[color as string];
-    return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
-  };
-
   let newPuzzleContent: CellContentType[][] = puzzleContent;
 
   for (let i = 0; i < puzzleColors.length; i++) {
@@ -32,13 +23,11 @@ const fillPuzzle = ({
       puzzleContent: newPuzzleContent,
       row: i,
       puzzleColors,
-      getEmptyCells: getEmptyCellsForColor,
     });
     newPuzzleContent = fill1EmptyCellInCol({
       puzzleContent: newPuzzleContent,
       col: i,
       puzzleColors,
-      getEmptyCells: getEmptyCellsForColor,
     });
   }
 
@@ -46,7 +35,9 @@ const fillPuzzle = ({
     if (cells.length === 0) return;
 
     const emptyCells: CellType[] = getEmptyCellsForColor({
-      color: color,
+      puzzleContent: newPuzzleContent,
+      puzzleColors,
+      color,
     });
     if (emptyCells.length === 0) return;
 

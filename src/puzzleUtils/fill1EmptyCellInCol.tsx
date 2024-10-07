@@ -5,12 +5,10 @@ const fill1EmptyCellInCol = ({
   puzzleContent,
   col,
   puzzleColors,
-  getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
   col: number;
   puzzleColors: ColorType[][];
-  getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
   const currentColContent: CellContentType[] = puzzleContent.map(
     (row) => row[col]
@@ -25,7 +23,6 @@ const fill1EmptyCellInCol = ({
       puzzleContent,
       cell: { row: emptyCellIndices[0], col } as CellType,
       puzzleColors,
-      getEmptyCells,
     });
   }
   return puzzleContent;

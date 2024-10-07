@@ -5,12 +5,10 @@ const fill1EmptyCellInRow = ({
   puzzleContent,
   row,
   puzzleColors,
-  getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
   row: number;
   puzzleColors: ColorType[][];
-  getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
   const currentRowContent: CellContentType[] = puzzleContent[row];
 
@@ -23,7 +21,6 @@ const fill1EmptyCellInRow = ({
       puzzleContent,
       cell: { row, col: emptyCellIndices[0] } as CellType,
       puzzleColors,
-      getEmptyCells,
     });
   }
   return puzzleContent;

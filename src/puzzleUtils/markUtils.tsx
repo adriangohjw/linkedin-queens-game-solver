@@ -1,5 +1,6 @@
 import { CellContentType, CellType, ColorType } from "../types";
 import { NO, YES } from "../constant";
+import { getEmptyCellsForColor } from "./util";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
 
 const markGrid = ({
@@ -112,19 +113,23 @@ const markColNo = ({
 
 const markAllOtherSameColorCellsNo = ({
   puzzleContent,
+  puzzleColors,
   color,
   excludedCell,
-  getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
+  puzzleColors: ColorType[][];
   color: string;
   excludedCell: CellType;
-  getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
   let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
     puzzleContent,
   });
-  const remainingEmptyCells: CellType[] = getEmptyCells({ color }).filter(
+  const remainingEmptyCells: CellType[] = getEmptyCellsForColor({
+    puzzleContent,
+    puzzleColors,
+    color,
+  }).filter(
     (cell) => cell.row !== excludedCell.row || cell.col !== excludedCell.col
   );
   remainingEmptyCells.forEach(
@@ -141,12 +146,10 @@ export const markYes = ({
   puzzleContent,
   cell,
   puzzleColors,
-  getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
   cell: CellType;
   puzzleColors: ColorType[][];
-  getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
   if (puzzleContent[cell.row][cell.col] === YES) return puzzleContent;
 
@@ -160,9 +163,9 @@ export const markYes = ({
   });
   newPuzzleContent = markAllOtherSameColorCellsNo({
     puzzleContent: newPuzzleContent,
+    puzzleColors,
     color: puzzleColors[cell.row][cell.col] as string,
     excludedCell: cell,
-    getEmptyCells,
   });
   newPuzzleContent = markSurroundingNo({
     puzzleContent: newPuzzleContent,
