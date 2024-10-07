@@ -5,6 +5,7 @@ import fill1EmptyCellInRow from "./fill1EmptyCellInRow";
 import fill1EmptyCellInCol from "./fill1EmptyCellInCol";
 import fillAllNoForColor from "./fillAllNoForColor";
 import fillMultiLinesPermutation from "./fillMultiLinesPermutation";
+import fillByTrialAndError from "./fillByTrialAndError";
 
 const fillPuzzle = ({
   puzzleContent,
@@ -51,6 +52,11 @@ const fillPuzzle = ({
   });
 
   newPuzzleContent = fillMultiLinesPermutation({
+    puzzleContent: newPuzzleContent,
+    puzzleColors,
+  });
+
+  newPuzzleContent = fillByTrialAndError({
     puzzleContent: newPuzzleContent,
     puzzleColors,
   });
