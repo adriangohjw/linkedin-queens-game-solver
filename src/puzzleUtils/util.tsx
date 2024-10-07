@@ -115,30 +115,3 @@ export const generateIsSolved = ({
 
   return true;
 };
-
-export const getAllEmptyCellsUtil = ({
-  puzzleContent,
-}: {
-  puzzleContent: CellContentType[][];
-}): CellType[] => {
-  return puzzleContent
-    .flatMap((row, rowIndex) =>
-      row.map((cell, colIndex) =>
-        cell === null ? { row: rowIndex, col: colIndex } : null
-      )
-    )
-    .filter((cell): cell is CellType => cell !== null);
-};
-
-export const getEmptyCellsUtil = ({
-  colors,
-  puzzleContent,
-  color,
-}: {
-  colors: Record<string, CellType[]>;
-  puzzleContent: CellContentType[][];
-  color: ColorType;
-}): CellType[] => {
-  const cells: CellType[] = colors[color as string];
-  return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
-};
