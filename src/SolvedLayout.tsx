@@ -76,10 +76,10 @@ export default function SolvedLayout({
     } else {
       return (
         <p className="text-lg text-red-500 font-bold">
-          Incorrect number of colors
+          Please fill up starting layout
           <br />
           <i>
-            ({uniquePuzzleColorsCount} / {size})
+            ({puzzleColorsFilledCount} / {totalCellsCount})
           </i>
         </p>
       );
