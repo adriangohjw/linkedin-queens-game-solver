@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { CellType, CellContentType, ColorType } from "./types";
 import {
   generateEmptyPuzzleContent,
@@ -7,7 +7,6 @@ import {
   generatePuzzleColorsFilledCount,
   generateIsSolved,
   generateUniquePuzzleColorsCount,
-  getEmptyCellsUtil,
 } from "./puzzleUtils/util";
 import fillPuzzle from "./puzzleUtils/fillPuzzle";
 import Layout from "./Layout";
@@ -40,15 +39,6 @@ export default function SolvedLayout({
   });
   const correctPuzzleColorsCount: boolean = size === uniquePuzzleColorsCount;
 
-  const getEmptyCells = useCallback(
-    ({ color }: { color: ColorType }): CellType[] => {
-      if (!isAllPuzzleColorsFilled) return [];
-
-      return getEmptyCellsUtil({ colors, puzzleContent, color });
-    },
-    [colors, puzzleContent, isAllPuzzleColorsFilled]
-  );
-
   const isSolved: boolean = generateIsSolved({
     puzzleContent,
     puzzleColors,
@@ -60,14 +50,13 @@ export default function SolvedLayout({
     let newPuzzleContent: CellContentType[][] = fillPuzzle({
       puzzleContent,
       puzzleColors,
-      getEmptyCells,
     });
 
     if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
       return;
 
     setPuzzleContent(newPuzzleContent);
-  }, [colors, getEmptyCells, isSolved, puzzleColors, puzzleContent, size]);
+  }, [colors, isSolved, puzzleColors, puzzleContent, size]);
 
   const renderMessage = (): JSX.Element | null => {
     if (isSolved)

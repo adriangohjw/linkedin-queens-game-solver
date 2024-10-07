@@ -8,12 +8,23 @@ import fillMultiLinesPermutation from "./fillMultiLinesPermutation";
 const fillPuzzle = ({
   puzzleContent,
   puzzleColors,
-  getEmptyCells,
 }: {
   puzzleContent: CellContentType[][];
   puzzleColors: ColorType[][];
-  getEmptyCells: ({ color }: { color: string }) => CellType[];
 }): CellContentType[][] => {
+  const colors: Record<string, CellType[]> = generateColors({
+    puzzleColors,
+  });
+
+  const getEmptyCellsForColor = ({
+    color,
+  }: {
+    color: ColorType;
+  }): CellType[] => {
+    const cells: CellType[] = colors[color as string];
+    return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
+  };
+
   let newPuzzleContent: CellContentType[][] = puzzleContent;
 
   for (let i = 0; i < puzzleColors.length; i++) {
@@ -21,23 +32,22 @@ const fillPuzzle = ({
       puzzleContent: newPuzzleContent,
       row: i,
       puzzleColors,
-      getEmptyCells,
+      getEmptyCells: getEmptyCellsForColor,
     });
     newPuzzleContent = fill1EmptyCellInCol({
       puzzleContent: newPuzzleContent,
       col: i,
       puzzleColors,
-      getEmptyCells,
+      getEmptyCells: getEmptyCellsForColor,
     });
   }
 
-  const colors: Record<string, CellType[]> = generateColors({
-    puzzleColors,
-  });
   Object.entries(colors).forEach(([color, cells]) => {
     if (cells.length === 0) return;
 
-    const emptyCells: CellType[] = getEmptyCells({ color });
+    const emptyCells: CellType[] = getEmptyCellsForColor({
+      color: color,
+    });
     if (emptyCells.length === 0) return;
 
     newPuzzleContent = fillAllNoForColor({
