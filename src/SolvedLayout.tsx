@@ -63,6 +63,9 @@ export default function SolvedLayout({
       getEmptyCells,
     });
 
+    if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
+      return;
+
     setPuzzleContent(newPuzzleContent);
   }, [colors, getEmptyCells, isSolved, puzzleColors, puzzleContent, size]);
 
