@@ -133,3 +133,10 @@ export const getEmptyCellsForColor = ({
   const cells: CellType[] = colors[color as string];
   return cells.filter((cell) => puzzleContent[cell.row][cell.col] === null);
 };
+
+export const areTwoPuzzlesSame = (
+  puzzleContent1: CellContentType[][],
+  puzzleContent2: CellContentType[][]
+): boolean => {
+  return JSON.stringify(puzzleContent1) === JSON.stringify(puzzleContent2);
+};

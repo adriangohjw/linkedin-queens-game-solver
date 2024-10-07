@@ -7,8 +7,10 @@ import {
   generatePuzzleColorsFilledCount,
   generateIsSolved,
   generateUniquePuzzleColorsCount,
+  areTwoPuzzlesSame,
 } from "./puzzleUtils/util";
 import fillPuzzle from "./puzzleUtils/fillPuzzle";
+import fillByTrialAndError from "./puzzleUtils/fillByTrialAndError";
 import Layout from "./Layout";
 import Puzzle from "./Puzzle";
 
@@ -46,17 +48,25 @@ export default function SolvedLayout({
 
   useEffect(() => {
     if (isSolved) return;
+    if (!isAllPuzzleColorsFilled) return;
 
     let newPuzzleContent: CellContentType[][] = fillPuzzle({
       puzzleContent,
       puzzleColors,
     });
 
-    if (JSON.stringify(puzzleContent) === JSON.stringify(newPuzzleContent))
-      return;
+    if (areTwoPuzzlesSame(puzzleContent, newPuzzleContent)) {
+      const attemptedSolution: CellContentType[][] = fillByTrialAndError({
+        puzzleContent,
+        puzzleColors,
+      });
+      if (areTwoPuzzlesSame(newPuzzleContent, attemptedSolution)) return;
+
+      newPuzzleContent = attemptedSolution;
+    }
 
     setPuzzleContent(newPuzzleContent);
-  }, [isSolved, puzzleColors, puzzleContent]);
+  }, [isSolved, puzzleColors, puzzleContent, isAllPuzzleColorsFilled]);
 
   const renderMessage = (): JSX.Element | null => {
     if (isSolved)

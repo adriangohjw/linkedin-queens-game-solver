@@ -1,8 +1,8 @@
 import { CellContentType, ColorType, CellType } from "../types";
-import { markNo } from "./markUtils";
+import { markYes } from "./markUtils";
 import duplicatePuzzleContent from "./duplicatePuzzleContent";
-import { generateIsSolved } from "./util";
 import fillPuzzle from "./fillPuzzle";
+import { areTwoPuzzlesSame } from "./util";
 
 export const getAllEmptyCellsUtil = ({
   puzzleContent,
@@ -30,19 +30,21 @@ const fillByTrialAndError = ({
   });
 
   const allEmptyCells: CellType[] = getAllEmptyCellsUtil({ puzzleContent });
-  allEmptyCells.forEach((cell) => {
-    let attemptedSolution: CellContentType[][] = markNo({
+
+  for (let i = 0; i < allEmptyCells.length; i++) {
+    let attemptedSolution: CellContentType[][] = markYes({
       puzzleContent: newPuzzleContent,
-      cell,
+      puzzleColors,
+      cell: allEmptyCells[i],
     });
     attemptedSolution = fillPuzzle({
       puzzleContent: attemptedSolution,
       puzzleColors,
     });
-    if (generateIsSolved({ puzzleContent: attemptedSolution, puzzleColors })) {
-      newPuzzleContent = attemptedSolution;
+    if (!areTwoPuzzlesSame(puzzleContent, attemptedSolution)) {
+      return attemptedSolution;
     }
-  });
+  }
 
   return newPuzzleContent;
 };
