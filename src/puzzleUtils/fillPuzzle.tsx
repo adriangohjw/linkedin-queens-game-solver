@@ -1,4 +1,5 @@
 import { CellContentType, CellType, ColorType } from "../types";
+import duplicatePuzzleContent from "./duplicatePuzzleContent";
 import { generateColors, getEmptyCellsForColor } from "./util";
 import fill1EmptyCellInRow from "./fill1EmptyCellInRow";
 import fill1EmptyCellInCol from "./fill1EmptyCellInCol";
@@ -16,7 +17,9 @@ const fillPuzzle = ({
     puzzleColors,
   });
 
-  let newPuzzleContent: CellContentType[][] = puzzleContent;
+  let newPuzzleContent: CellContentType[][] = duplicatePuzzleContent({
+    puzzleContent,
+  });
 
   for (let i = 0; i < puzzleColors.length; i++) {
     newPuzzleContent = fill1EmptyCellInRow({
