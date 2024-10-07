@@ -31,12 +31,12 @@ const fillByTrialAndError = ({
 
   const allEmptyCells: CellType[] = getAllEmptyCellsUtil({ puzzleContent });
   allEmptyCells.forEach((cell) => {
-    const tempPuzzleContent: CellContentType[][] = markNo({
+    let attemptedSolution: CellContentType[][] = markNo({
       puzzleContent: newPuzzleContent,
       cell,
     });
-    const attemptedSolution: CellContentType[][] = fillPuzzle({
-      puzzleContent: tempPuzzleContent,
+    attemptedSolution = fillPuzzle({
+      puzzleContent: attemptedSolution,
       puzzleColors,
     });
     if (generateIsSolved({ puzzleContent: attemptedSolution, puzzleColors })) {
